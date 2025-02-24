@@ -43,7 +43,7 @@
 @foreach (var item in Model.Workflow) {
         <tr>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.PersistenceId">Edit</a>
+                <a asp-page="./Edit" asp-route-id="@item.InstanceId">Edit</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.WorkflowDefinitionId)

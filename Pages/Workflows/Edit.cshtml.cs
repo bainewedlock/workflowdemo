@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using WorkerDemo.Model;
@@ -13,6 +8,8 @@ namespace WorkerDemo.Pages.Workflows
 {
     public class EditModel : PageModel
     {
+        public Workflow Workflow { get; set; } = default!;
+        public ExecutionError[] Errors { get; set; } = { };
         readonly WorkflowContext db;
         readonly IWorkflowHost wf;
 
@@ -23,17 +20,16 @@ namespace WorkerDemo.Pages.Workflows
             this.wf = wf;
         }
 
-        public Workflow Workflow { get; set; } = default!;
-        //public Workflow Workflow { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var workflow = await db.Workflows.FirstOrDefaultAsync(m => m.PersistenceId == id);
+            var workflow = await db.Workflows
+                .FirstOrDefaultAsync(m => m.InstanceId == new Guid(id));
             if (workflow == null)
             {
                 return NotFound();
@@ -41,6 +37,9 @@ namespace WorkerDemo.Pages.Workflows
             else
             {
                 Workflow = workflow;
+                Errors = await db.ExecutionErrors
+                    .Where(x => x.WorkflowId == id)
+                    .ToArrayAsync();
             }
             return Page();
         }
@@ -53,7 +52,7 @@ namespace WorkerDemo.Pages.Workflows
         public async Task<IActionResult> OnPostResumeAsync(string persistenceId, string instanceId)
         {
             bool ok = await wf.ResumeWorkflow(instanceId);
-            return RedirectToPage("./Edit", new { id = persistenceId });
+            return RedirectToPage("./Edit", new { id = instanceId });
         }
     }
 }

@@ -74,15 +74,46 @@
 </div>
 <div>
 
+@if (Model.Errors.Any())
+{
+    <h2>Errors</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Errors[0].ErrorTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Errors[0].Message)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Errors)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ErrorTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Message)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
     @if (Model.Workflow.Status == 1) // 1:suspended
     {
-     <form method="post">
-        <button class="btn btn-info"
-            asp-page-handler="Resume"
-            asp-route-persistenceId="@Model.Workflow.PersistenceId"
-            asp-route-instanceId="@Model.Workflow.InstanceId"
-            type="submit">Resume</button>
-    </form>
+        <form method="post">
+            <button class="btn btn-info"
+                    asp-page-handler="Resume"
+                    asp-route-instanceId="@Model.Workflow.InstanceId"
+                    type="submit">
+                Resume
+            </button>
+        </form>
 
     }
 
