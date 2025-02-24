@@ -8,14 +8,20 @@ public class DemoWorkflow : IWorkflow
 
     public int Version => 1;
 
+
     public void Build(IWorkflowBuilder<object> builder)
     {
         builder
+            .UseDefaultErrorBehavior(WorkflowErrorHandling.Suspend)
             .StartWith(ctx =>
             {
                 Debug.WriteLine("Hello");
-                return ExecutionResult.Next();
 
+                Random random = new Random();
+                if (random.Next(2) == 0)
+                    throw new Exception("simulierte Ausnahme");
+
+                return ExecutionResult.Next();
             })
             .Then(ctx =>
             {

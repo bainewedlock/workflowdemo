@@ -38,9 +38,10 @@ var dir = Path.GetDirectoryName(workflow_cs.Split("=", 2)[1])!;
 if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 ///////////////////////////////////////////////////////////////////////////////
 
-app.MapGet("/demo", async () =>
+app.MapGet("/demo", async ctx =>
 {
     await wf.StartWorkflow("Demo");
+    ctx.Response.Redirect("/");
 });
 
 
