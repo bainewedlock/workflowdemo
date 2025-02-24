@@ -1,15 +1,21 @@
+using WorkflowCore.Interface;
+using WorkflowCore.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+
+builder.Services
+    .AddWorkflow(x => x.UseSqlite(
+        builder.Configuration.GetConnectionString("workflow"), true))
+    .AddHostedService<WorkflowHost>()
+    .AddRazorPages();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -21,5 +27,21 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+
+///////////////////////////////////////////////////////////////////////////////
+var wf = app.Services.GetService<IWorkflowHost>()!;
+wf.RegisterWorkflow<DemoWorkflow>();
+///////////////////////////////////////////////////////////////////////////////
+var workflow_cs = builder.Configuration.GetConnectionString("workflow")!;
+var dir = Path.GetDirectoryName(workflow_cs.Split("=", 2)[1])!;
+if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+///////////////////////////////////////////////////////////////////////////////
+
+app.MapGet("/demo", async () =>
+{
+    await wf.StartWorkflow("Demo");
+});
+
 
 app.Run();

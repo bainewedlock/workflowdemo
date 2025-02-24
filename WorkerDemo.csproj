@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="WorkflowCore" Version="3.13.0" />
+    <PackageReference Include="WorkflowCore.Persistence.Sqlite" Version="3.13.0" />
+  </ItemGroup>
 </Project>
