@@ -1,0 +1,69 @@
+﻿@page
+@model WorkerDemo.Pages.Workflows.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Workflows</h1>
+
+<p>
+<a class="btn btn-info" href="demo">Start Demo Workflow</a>
+<form method="post" asp-page-handler="Cleanup">
+    <button type="submit" class="btn btn-warning">Remove all finished</button>
+</form>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Workflow[0].WorkflowDefinitionId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Workflow[0].Version)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Workflow[0].NextExecution)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Workflow[0].CreateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Workflow[0].CompleteTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Workflow[0].Status)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Workflow) {
+        <tr>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.PersistenceId">Edit</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkflowDefinitionId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Version)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NextExecution)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompleteTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

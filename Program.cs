@@ -1,3 +1,4 @@
+using WorkerDemo.Model;
 using WorkflowCore.Interface;
 using WorkflowCore.Services;
 
@@ -8,7 +9,9 @@ builder.Services
     .AddWorkflow(x => x.UseSqlite(
         builder.Configuration.GetConnectionString("workflow"), true))
     .AddHostedService<WorkflowHost>()
+    .AddDbContext<WorkflowContext>()
     .AddRazorPages();
+
 
 var app = builder.Build();
 
@@ -37,6 +40,9 @@ var workflow_cs = builder.Configuration.GetConnectionString("workflow")!;
 var dir = Path.GetDirectoryName(workflow_cs.Split("=", 2)[1])!;
 if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 ///////////////////////////////////////////////////////////////////////////////
+
+
+app.MapGet("/", async ctx => ctx.Response.Redirect("workflows"));
 
 app.MapGet("/demo", async ctx =>
 {

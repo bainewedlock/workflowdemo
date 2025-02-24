@@ -4,34 +4,6 @@
     ViewData["Title"] = "Home page";
 }
 
-<h2>Workflows</h2>
+<a class="btn btn-info" href="workflows">Workflows</a>
 
-<p>
-<a class="btn btn-info" href="demo">Start Demo Workflow</a>
-<form method="post" asp-page-handler="Cleanup">
-    <button type="submit" class="btn btn-warning">Remove all finished</button>
-</form>
-</p>
-
-<form method="post">
-<table class="table table-bordered">
-@foreach (var w in Model.Workflows)
-{
-    <tr>
-    <td>@w.InstanceId</td>
-    <td>@w.CreateTime</td>
-    <td>@w.CompleteTime</td>
-    <td>@w.Status</td>
-    <td>@if (w.Status == 1)
-        {
-            <button
-                asp-route-instanceid="@w.InstanceId"
-                asp-page-handler="Resume"
-                type="submit">resume</button> }
-        </td>
-    </tr>
-}
-</table>
-</form>
-
-
+<h2>Index</h2>

@@ -1,0 +1,90 @@
+﻿@page
+@model WorkerDemo.Pages.Workflows.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Workflow</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Workflow.InstanceId)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Workflow.InstanceId)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Workflow.WorkflowDefinitionId)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Workflow.WorkflowDefinitionId)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Workflow.Version)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Workflow.Version)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Workflow.Description)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Workflow.Description)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Workflow.Reference)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Workflow.Reference)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Workflow.NextExecution)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Workflow.NextExecution)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Workflow.Data)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Workflow.Data)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Workflow.CreateTime)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Workflow.CreateTime)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Workflow.CompleteTime)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Workflow.CompleteTime)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Workflow.Status)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Workflow.Status)
+        </dd>
+    </dl>
+</div>
+<div>
+
+    @if (Model.Workflow.Status == 1) // 1:suspended
+    {
+     <form method="post">
+        <button class="btn btn-info"
+            asp-page-handler="Resume"
+            asp-route-persistenceId="@Model.Workflow.PersistenceId"
+            asp-route-instanceId="@Model.Workflow.InstanceId"
+            type="submit">Resume</button>
+    </form>
+
+    }
+
+    <a asp-page="./Index">Back to List</a>
+</div>
