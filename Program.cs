@@ -1,17 +1,17 @@
+using Microsoft.EntityFrameworkCore;
 using WorkerDemo.Model;
 using WorkflowCore.Interface;
 using WorkflowCore.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var workflow_cs = builder.Configuration.GetConnectionString("workflow")!;
 
 builder.Services
-    .AddWorkflow(x => x.UseSqlite(
-        builder.Configuration.GetConnectionString("workflow"), true))
+    .AddWorkflow(x => x.UseSqlite(workflow_cs, true))
     .AddHostedService<WorkflowHost>()
-    .AddDbContext<WorkflowContext>()
+    .AddDbContext<WorkflowContext>(opt => opt.UseSqlite(workflow_cs))
     .AddRazorPages();
-
 
 var app = builder.Build();
 
@@ -36,7 +36,6 @@ app.MapRazorPages();
 var wf = app.Services.GetService<IWorkflowHost>()!;
 wf.RegisterWorkflow<DemoWorkflow>();
 ///////////////////////////////////////////////////////////////////////////////
-var workflow_cs = builder.Configuration.GetConnectionString("workflow")!;
 var dir = Path.GetDirectoryName(workflow_cs.Split("=", 2)[1])!;
 if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 ///////////////////////////////////////////////////////////////////////////////

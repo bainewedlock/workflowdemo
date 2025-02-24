@@ -23,7 +23,6 @@ namespace WorkerDemo.Pages.Workflows
 
         public async Task<IActionResult> OnPostCleanup(string instanceId)
         {
-            using var db = new WorkflowContext();
             await db.Workflows
                 .Where(x => x.Status == 2)
                 .ExecuteDeleteAsync();

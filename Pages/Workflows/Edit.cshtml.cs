@@ -44,11 +44,6 @@ namespace WorkerDemo.Pages.Workflows
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            return RedirectToPage();
-        }
-
         public async Task<IActionResult> OnPostResumeAsync(string persistenceId, string instanceId)
         {
             bool ok = await wf.ResumeWorkflow(instanceId);

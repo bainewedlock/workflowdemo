@@ -10,7 +10,7 @@ namespace WorkerDemo.Pages
             _logger = logger;
         }
 
-        public async void OnGet()
+        public void OnGet()
         {
         }
     }
