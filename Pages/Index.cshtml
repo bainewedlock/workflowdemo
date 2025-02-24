@@ -5,9 +5,17 @@
 }
 
 <h2>Workflows</h2>
+
+<p>
+<a class="btn btn-info" href="demo">Start Demo Workflow</a>
+<form method="post" asp-page-handler="Cleanup">
+    <button type="submit" class="btn btn-warning">Remove all finished</button>
+</form>
+</p>
+
 <form method="post">
 <table class="table table-bordered">
-@foreach (var w in Model.Suspended)
+@foreach (var w in Model.Workflows)
 {
     <tr>
     <td>@w.InstanceId</td>
@@ -16,12 +24,14 @@
     <td>@w.Status</td>
     <td>@if (w.Status == 1)
         {
-            <button asp-route-instanceid="@w.InstanceId"
-            type="submit">resume</button> }
+            <button
+                asp-route-instanceid="@w.InstanceId"
+                asp-page-handler="Resume"
+                type="submit">resume</button> }
         </td>
     </tr>
 }
 </table>
 </form>
 
-<a href="demo">Start Demo Workflow</a>
+
