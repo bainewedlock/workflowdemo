@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WorkerDemo.Pages
@@ -10,8 +11,9 @@ namespace WorkerDemo.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            return RedirectToPage("Workflows/Index");
         }
     }
 }

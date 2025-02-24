@@ -41,8 +41,6 @@ if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 ///////////////////////////////////////////////////////////////////////////////
 
 
-app.MapGet("/", async ctx => ctx.Response.Redirect("workflows"));
-
 app.MapGet("/demo", async ctx =>
 {
     await wf.StartWorkflow("Demo");
