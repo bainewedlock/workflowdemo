@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using WorkerDemo;
 using WorkerDemo.Model;
 using WorkflowCore.Interface;
 using WorkflowCore.Services;
@@ -12,6 +14,13 @@ builder.Services
     .AddHostedService<WorkflowHost>()
     .AddDbContext<WorkflowContext>(opt => opt.UseSqlite(workflow_cs))
     .AddRazorPages();
+
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(c => { c.Cookie.Name = "WorkerDemo"; });
+
+builder.Services.AddSignalR().AddNewtonsoftJsonProtocol();
+builder.Services.AddHostedService<SignalrService>();
 
 var app = builder.Build();
 
@@ -27,9 +36,19 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+///////////////////////////////////////////////////////////////////////////////
+// BEGIN Authentication Services
+///////////////////////////////////////////////////////////////////////////////
+app.UseAuthentication();
 app.UseAuthorization();
+///////////////////////////////////////////////////////////////////////////////
+// END Authentication Services
+///////////////////////////////////////////////////////////////////////////////
 
 app.MapRazorPages();
+
+
+app.MapHub<WorkflowHub>("workflowhub");
 
 
 ///////////////////////////////////////////////////////////////////////////////

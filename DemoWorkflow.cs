@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using WorkerDemo;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -16,6 +17,10 @@ public class DemoWorkflow : IWorkflow
             .StartWith(ctx =>
             {
                 Debug.WriteLine("Hello");
+
+                Thread.Sleep(3000);
+
+                SignalrService.Enqueue("foobarchen " + ctx.Workflow.Id);
 
                 Random random = new Random();
                 if (random.Next(2) == 0)
