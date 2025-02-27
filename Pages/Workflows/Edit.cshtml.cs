@@ -17,7 +17,7 @@ namespace WorkerDemo.Pages.Workflows
             IWorkflowHost wf)
         {
             this.db = db;
-            this.wf = wf;
+            //this.wf = wf;
         }
 
 
@@ -44,10 +44,10 @@ namespace WorkerDemo.Pages.Workflows
             return Page();
         }
 
-        public async Task<IActionResult> OnPostResumeAsync(string persistenceId, string instanceId)
-        {
-            bool ok = await wf.ResumeWorkflow(instanceId);
-            return RedirectToPage("./Edit", new { id = instanceId });
-        }
+        //public async Task<IActionResult> OnPostResumeAsync(string persistenceId, string instanceId)
+        //{
+        //    bool ok = await wf.ResumeWorkflow(instanceId);
+        //    return RedirectToPage("./Edit", new { id = instanceId });
+        //}
     }
 }

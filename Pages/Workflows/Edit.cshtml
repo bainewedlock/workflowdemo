@@ -125,7 +125,7 @@
 
     @if (Model.Workflow.Status == 1) // 1:suspended
     {
-        <form method="post">
+@*         <form method="post">
             <button class="btn btn-info"
                     asp-page-handler="Resume"
                     asp-route-instanceId="@Model.Workflow.InstanceId"
@@ -133,8 +133,10 @@
                 Resume
             </button>
         </form>
+ *@ 
 
     }
+    <button class="btn btn-info" onclick="resume_workflow();">Resume</button>
 
     <a asp-page="./Index">Back to List</a>
 

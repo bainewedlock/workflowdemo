@@ -17,6 +17,17 @@ connection.start().then(function () {
     return console.error(err.toString());
 });
 
+function resume_workflow() {
+    console.log("könnte gehen");
+    connection.invoke("Resume", get_workflow_id()).catch(function (err) {
+        return console.error(err.toString());
+    });
+//    document.getElementById("resume_btn").onclick = () => {
+//        connection.invoke("Resume", get_workflow_id()).catch(function (err) {
+//        return console.error(err.toString());
+//    });
+}
+
 connection.on("Log", function (data) {
     if(document.getElementById("empty_log"))
         document.getElementById("empty_log").remove();
