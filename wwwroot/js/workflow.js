@@ -19,7 +19,7 @@ connection.start().then(function () {
 })
 
 connection.on("action", function (a) {
-    console.log("action: " + action);
+    console.log("actionr: " + action);
 });
 
 
@@ -28,6 +28,10 @@ connection.on("updates_message", function (upd) {
 });
 
 connection.on("ReceiveMessage", function (user, message) {
+    console.log("action2: " + user);
+});
+
+connection.on("ReceiveMessage2", function (user, message) {
     var li = document.createElement("li");
     document.getElementById("messagesList").appendChild(li);
     // We can assign user-supplied strings to an element's textContent because it

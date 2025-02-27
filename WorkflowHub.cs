@@ -21,7 +21,7 @@ public class WorkflowHub : Hub
         //        { "name", "1" },
         //        { "target_value", "2" }
         //    }});
-        await Clients.All.SendAsync("ReceiveMessage", "user", "message");
+        await Clients.All.SendAsync("ReceiveMessage", "client_join", "message");
     }
 
     public async Task SendMessage(string user, string message)

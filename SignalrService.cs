@@ -20,9 +20,8 @@ namespace WorkerDemo
             {
                 var action = await Queue.ReceiveAsync(stoppingToken);
                 Debug.Write($"sending action: {action}");
-                await hubctx.Clients.All.SendAsync("action", action);
-
-                await hubctx.Clients.All.SendAsync("ReceiveMessage", "user", "message");
+                //await hubctx.Clients.All.SendAsync("action", action);
+                await hubctx.Clients.All.SendAsync("ReceiveMessage", "user " + Guid.NewGuid().ToString(), "message");
             }
         }
 
