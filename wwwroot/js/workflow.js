@@ -21,3 +21,8 @@ connection.start().then(function () {
 connection.on("action", function (a) {
     console.log("action: " + action);
 })
+
+
+connection.on("updates_message", function (upd) {
+    console.log("upd: " + action);
+});

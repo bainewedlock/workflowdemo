@@ -19,7 +19,10 @@ builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie(c => { c.Cookie.Name = "WorkerDemo"; });
 
+
 builder.Services.AddSignalR().AddNewtonsoftJsonProtocol();
+//builder.Services.AddSingleton<WorkflowHub>();
+
 builder.Services.AddHostedService<SignalrService>();
 
 var app = builder.Build();
