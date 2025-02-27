@@ -23,10 +23,10 @@ namespace WorkerDemo.SignalR
                 var m = await Queue.ReceiveAsync(stoppingToken);
                 foreach (var c in Clients)
                 {
-                    if (c.Value == m.workflow)
+                    if (c.Value == m.workflow_id)
                     {
                         await hubctx.Clients.All.SendAsync(
-                            "ReceiveMessage", m.message, "x");
+                            "ReceiveMessage", m.key, m.data);
                     }
                 }
             }
