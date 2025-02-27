@@ -18,8 +18,6 @@ connection.start().then(function () {
 })
 
 connection.on("ReceiveMessage", function (user, message) {
-    var li = document.createElement("li");
-    document.getElementById("messagesList").appendChild(li);
-    li.textContent = `${user} says ${message}`;
+    console.log("ReceiveMessage", user, message);
 });
 
