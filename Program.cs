@@ -15,10 +15,19 @@ builder.Services
     .AddDbContext<WorkflowContext>(opt => opt.UseSqlite(workflow_cs))
     .AddRazorPages();
 
+builder.Services.AddTransient(typeof(StepA), svc => {
+    var step = new StepA();
+    step.WorkflowConfig = svc.GetService<WorkflowConfig>()!;
+    return step;
+}); 
+
+
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie(c => { c.Cookie.Name = "WorkerDemo"; });
 
+builder.Services.AddSingleton(
+    builder.Configuration.GetSection("Workflow").Get<WorkflowConfig>()!);
 
 builder.Services.AddSignalR();
 
@@ -63,5 +72,6 @@ app.MapGet("/demo", async ctx =>
     await wf.StartWorkflow("Demo");
     ctx.Response.Redirect("/Workflows");
 });
+
 
 app.Run();
