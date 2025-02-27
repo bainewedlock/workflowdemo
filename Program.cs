@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using WorkerDemo.Model;
 using WorkerDemo.SignalR;
+using Workflow_Demo;
 using WorkflowCore.Interface;
 using WorkflowCore.Services;
 
@@ -21,6 +22,11 @@ builder.Services.AddTransient(typeof(StepA), svc => {
     return step;
 }); 
 
+builder.Services.AddTransient(typeof(StepB), svc => {
+    var step = new StepB();
+    step.WorkflowConfig = svc.GetService<WorkflowConfig>()!;
+    return step;
+}); 
 
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

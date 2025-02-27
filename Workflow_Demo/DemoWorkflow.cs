@@ -1,6 +1,7 @@
-﻿using System.Diagnostics;
-using WorkflowCore.Interface;
+﻿using WorkflowCore.Interface;
 using WorkflowCore.Models;
+
+namespace Workflow_Demo;
 
 public class DemoWorkflow : IWorkflow
 {
@@ -14,10 +15,6 @@ public class DemoWorkflow : IWorkflow
         builder
             .UseDefaultErrorBehavior(WorkflowErrorHandling.Suspend)
             .StartWith<StepA>()
-            .Then(ctx =>
-            {
-                Debug.WriteLine("Good bye");
-                return ExecutionResult.Next();
-            });
+            .Then<StepB>();
     }
 }
