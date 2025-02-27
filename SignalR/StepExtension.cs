@@ -1,7 +1,6 @@
-﻿using WorkerDemo.SignalR;
-using WorkflowCore.Interface;
+﻿using WorkflowCore.Interface;
 
-namespace WorkerDemo.Pages.Workflows
+namespace WorkerDemo.SignalR
 {
     public static class StepExtension
     {
