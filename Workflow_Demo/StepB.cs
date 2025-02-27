@@ -4,7 +4,7 @@ public class StepB : WorkItemStepAsync
 {
     public override async Task RunAsync()
     {
-        var text = ReadStringAsset("dummy.txt");
+        var text = await ReadStringAssetAsync("dummy.txt");
         Log($"got from asset: {text}");
     }
 }

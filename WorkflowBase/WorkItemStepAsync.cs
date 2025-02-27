@@ -42,10 +42,11 @@ public abstract class WorkItemStepAsync : StepBodyAsync
     /// <param name="filename">Filename without path</param>
     /// <param name="create">Callback to create asset</param>
     /// <returns>File content as string</returns>
-    protected string StringAsset(string filename, Func<string> create)
+    protected async Task<string> StringAssetAsync(
+        string filename, Func<string> create)
     {
-        WriteStringAsset(filename, create);
-        return ReadStringAsset(filename);
+        await WriteStringAssetAsync(filename, create);
+        return await ReadStringAssetAsync(filename);
     }
 
     /// <summary>
@@ -53,11 +54,11 @@ public abstract class WorkItemStepAsync : StepBodyAsync
     /// </summary>
     /// <param name="filename">Filename without path</param>
     /// <returns>File content as string</returns>
-    protected string ReadStringAsset(string filename)
+    protected async Task<string> ReadStringAssetAsync(string filename)
     {
         var dir = InitAssetDir();
         var path = Path.Combine(dir, filename);
-        return File.ReadAllText(path);
+        return await File.ReadAllTextAsync(path);
     }
 
     /// <summary>
@@ -65,7 +66,8 @@ public abstract class WorkItemStepAsync : StepBodyAsync
     /// </summary>
     /// <param name="filename">Filename without path</param>
     /// <param name="create">Callback to create asset</param>
-    protected void WriteStringAsset(string filename, Func<string> create)
+    protected async Task WriteStringAssetAsync(string filename,
+        Func<string> create)
     {
         var dir = InitAssetDir();
         var path = Path.Combine(dir, filename);
@@ -75,8 +77,8 @@ public abstract class WorkItemStepAsync : StepBodyAsync
         }
         else
         {
-            var content = create();
-            File.WriteAllText(path, content);
+            var content = create(); // TODO: make create() async
+            await File.WriteAllTextAsync(path, content);
             Log("asset",
                 $"string asset written: {filename} ({content.Length})");
         }

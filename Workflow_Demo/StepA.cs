@@ -14,7 +14,7 @@ class StepA : WorkItemStepAsync
             Log($"looping {i+1}/10");
         }
 
-        WriteStringAsset("dummy.txt", () =>
+        await WriteStringAssetAsync("dummy.txt", () =>
         {
             return "hallo welt";
         });
