@@ -18,7 +18,13 @@ connection.start().then(function () {
 });
 
 connection.on("Log", function (data) {
-    var li = document.createElement("li");
-    li.textContent = `[${data.timestamp}] ${data.message}`;
-    document.getElementById("log").appendChild(li);
+    if(document.getElementById("empty_log"))
+        document.getElementById("empty_log").remove();
+    var t = document.getElementById("log");
+    var row = t.insertRow(1);
+    row.insertCell(0).innerHTML = data.timestamp;
+    row.insertCell(1).innerHTML = data.message;
+//    var li = document.createElement("li");
+//    li.textContent = `[${data.timestamp}] ${data.message}`;
+//    document.getElementById("log").appendChild(li);
 });

@@ -9,7 +9,7 @@ namespace WorkerDemo.SignalR
         {
             var blub = new Dictionary<string, object>
             {
-                { "timestamp", DateTime.Now },
+                { "timestamp", DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") },
                 { "message", message }
             };
 
