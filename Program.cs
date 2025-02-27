@@ -48,7 +48,7 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 
-app.MapHub<WorkflowHub>("workflowhub");
+app.MapHub<WorkflowHub>("/workflowhub");
 
 
 ///////////////////////////////////////////////////////////////////////////////

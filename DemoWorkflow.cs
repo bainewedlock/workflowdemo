@@ -18,13 +18,15 @@ public class DemoWorkflow : IWorkflow
             {
                 Debug.WriteLine("Hello");
 
-                Thread.Sleep(3000);
+                for(int i=0; i< 10; i++)
+                {
+                    Thread.Sleep(3000);
+                    SignalrService.Enqueue("foobarchen " + ctx.Workflow.Id);
+                }
 
-                SignalrService.Enqueue("foobarchen " + ctx.Workflow.Id);
-
-                Random random = new Random();
-                if (random.Next(2) == 0)
-                    throw new Exception("simulierte Ausnahme");
+                //Random random = new Random();
+                //if (random.Next(2) == 0)
+                //    throw new Exception("simulierte Ausnahme");
 
                 return ExecutionResult.Next();
             })

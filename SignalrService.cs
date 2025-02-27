@@ -19,7 +19,7 @@ namespace WorkerDemo
             while (!stoppingToken.IsCancellationRequested)
             {
                 var action = await Queue.ReceiveAsync(stoppingToken);
-                Debug.Write($"action: {action}");
+                Debug.Write($"sending action: {action}");
                 await hubctx.Clients.All.SendAsync("action", action);
             }
         }

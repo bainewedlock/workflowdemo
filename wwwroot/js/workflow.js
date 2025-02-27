@@ -14,7 +14,9 @@ connection.start().then(function () {
     connection.invoke('client_join', get_workflow_id()).catch(function (err) {
         return console.error(err.toString());
     });
-});
+}).catch(function (err) {
+    return console.error(err.toString());
+})
 
 connection.on("action", function (a) {
     console.log("action: " + action);
