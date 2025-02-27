@@ -18,14 +18,7 @@ connection.start().then(function () {
 });
 
 connection.on("Log", function (data) {
-//    console.log("tja");
-//    var li = document.createElement("li");
-//    //li.textContent = `[${data.timestamp}] ${data.message}`;
-//    li.textContent = "hä";
-//    console.log("tjo", document.getElementById("log"));
-//    document.getElementById("log").apendChild(li);
-    console.log("tjo");
-}).catch(function (err) {
-    return console.error(err.toString());
+    var li = document.createElement("li");
+    li.textContent = `[${data.timestamp}] ${data.message}`;
+    document.getElementById("log").appendChild(li);
 });
-
