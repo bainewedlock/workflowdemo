@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using WorkerDemo;
 using WorkerDemo.Model;
+using WorkerDemo.SignalR;
 using WorkflowCore.Interface;
 using WorkflowCore.Services;
 
@@ -21,7 +21,6 @@ builder.Services
 
 
 builder.Services.AddSignalR(); //.AddNewtonsoftJsonProtocol();
-//builder.Services.AddSingleton<WorkflowHub>();
 
 builder.Services.AddHostedService<SignalrService>();
 
@@ -49,11 +48,7 @@ app.UseAuthorization();
 ///////////////////////////////////////////////////////////////////////////////
 
 app.MapRazorPages();
-
-
 app.MapHub<WorkflowHub>("/workflowhub");
-app.MapHub<ChatHub>("/chatHub");
-
 
 ///////////////////////////////////////////////////////////////////////////////
 var wf = app.Services.GetService<IWorkflowHost>()!;
@@ -63,12 +58,10 @@ var dir = Path.GetDirectoryName(workflow_cs.Split("=", 2)[1])!;
 if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 ///////////////////////////////////////////////////////////////////////////////
 
-
 app.MapGet("/demo", async ctx =>
 {
     await wf.StartWorkflow("Demo");
-    ctx.Response.Redirect("/");
+    ctx.Response.Redirect("/Workflows");
 });
-
 
 app.Run();

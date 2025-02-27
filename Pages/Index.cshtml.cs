@@ -11,9 +11,9 @@ namespace WorkerDemo.Pages
             _logger = logger;
         }
 
-        //public IActionResult OnGet()
-        //{
-        //    return RedirectToPage("Workflows/Index");
-        //}
+        public IActionResult OnGet()
+        {
+            return RedirectToPage("Workflows/Index");
+        }
     }
 }

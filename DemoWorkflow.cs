@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using WorkerDemo;
+using WorkerDemo.SignalR;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -21,7 +21,8 @@ public class DemoWorkflow : IWorkflow
                 for(int i=0; i< 10; i++)
                 {
                     Thread.Sleep(3000);
-                    SignalrService.Enqueue("foobarchen " + ctx.Workflow.Id);
+                    SignalrService.Enqueue(new WorkflowMessage(
+                        workflow: ctx.Workflow.Id, message: "Hello"));
                 }
 
                 //Random random = new Random();
