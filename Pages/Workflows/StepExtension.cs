@@ -16,7 +16,7 @@ namespace WorkerDemo.Pages.Workflows
 
             SignalrService.Enqueue(new WorkflowMessage(
                 workflow_id: ctx.Workflow.Id,
-                key: "log",
+                key: "Log",
                 data: blub));
         }
     }

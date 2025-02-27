@@ -25,8 +25,8 @@ namespace WorkerDemo.SignalR
                 {
                     if (c.Value == m.workflow_id)
                     {
-                        await hubctx.Clients.All.SendAsync(
-                            "ReceiveMessage", m.key, m.data);
+                        await c.Key.SendAsync(m.key, m.data);
+                        //await hubctx.Clients.All.SendAsync(m.key, m.data);
                     }
                 }
             }

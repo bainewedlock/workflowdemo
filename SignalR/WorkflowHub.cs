@@ -22,10 +22,4 @@ public class WorkflowHub : Hub
         SignalrService.Join(Clients.Caller, workflow_id);
         Debug.WriteLine($"ClientJoin {workflow_id}");
     }
-
-    public async Task SendMessage(string user, string message)
-    {
-        await Clients.All.SendAsync("ReceiveMessage", user, message);
-    }
-
 }
