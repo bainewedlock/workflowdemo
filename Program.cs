@@ -20,7 +20,7 @@ builder.Services
         .AddCookie(c => { c.Cookie.Name = "WorkerDemo"; });
 
 
-builder.Services.AddSignalR().AddNewtonsoftJsonProtocol();
+builder.Services.AddSignalR(); //.AddNewtonsoftJsonProtocol();
 //builder.Services.AddSingleton<WorkflowHub>();
 
 builder.Services.AddHostedService<SignalrService>();
@@ -52,6 +52,7 @@ app.MapRazorPages();
 
 
 app.MapHub<WorkflowHub>("/workflowhub");
+app.MapHub<ChatHub>("/chatHub");
 
 
 ///////////////////////////////////////////////////////////////////////////////

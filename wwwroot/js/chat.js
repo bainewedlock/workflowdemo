@@ -1,31 +1,9 @@
 ﻿"use strict";
 
-var connection = new signalR.HubConnectionBuilder()
-    .withUrl('/workflowhub')
-    .withAutomaticReconnect()
-    .build();
+var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
-function get_workflow_id() {
-    return document.querySelector('#workflow_id').value;
-}
-
-connection.start().then(function () {
-    console.log('connected');
-    connection.invoke('client_join', get_workflow_id()).catch(function (err) {
-        return console.error(err.toString());
-    });
-}).catch(function (err) {
-    return console.error(err.toString());
-})
-
-connection.on("action", function (a) {
-    console.log("action: " + action);
-});
-
-
-connection.on("updates_message", function (upd) {
-    console.log("upd: " + action);
-});
+//Disable the send button until connection is established.
+document.getElementById("sendButton").disabled = true;
 
 connection.on("ReceiveMessage", function (user, message) {
     var li = document.createElement("li");
@@ -34,7 +12,12 @@ connection.on("ReceiveMessage", function (user, message) {
     // is not interpreted as markup. If you're assigning in any other way, you 
     // should be aware of possible script injection concerns.
     li.textContent = `${user} says ${message}`;
-    console.log("ja gut äh");
+});
+
+connection.start().then(function () {
+    document.getElementById("sendButton").disabled = false;
+}).catch(function (err) {
+    return console.error(err.toString());
 });
 
 document.getElementById("sendButton").addEventListener("click", function (event) {

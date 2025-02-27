@@ -13,13 +13,20 @@ public class WorkflowHub : Hub
     {
         Debug.WriteLine($"client_join {workflow_id}");
         await Clients.All.SendAsync("action", "ähh");
-        await Clients.Caller.SendAsync("action", "ähh2");
+        //await Clients.Caller.SendAsync("action", "ähh2");
 
-        await Clients.All.SendAsync("updates_message", new [] {
-            new Dictionary<string, object>
-            {
-                { "name", "1" },
-                { "target_value", "2" }
-            }});
+        //await Clients.All.SendAsync("updates_message", new [] {
+        //    new Dictionary<string, object>
+        //    {
+        //        { "name", "1" },
+        //        { "target_value", "2" }
+        //    }});
+        await Clients.All.SendAsync("ReceiveMessage", "user", "message");
     }
+
+    public async Task SendMessage(string user, string message)
+    {
+        await Clients.All.SendAsync("ReceiveMessage", user, message);
+    }
+
 }
