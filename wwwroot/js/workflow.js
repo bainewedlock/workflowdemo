@@ -23,8 +23,7 @@ connection.on("Log", function (data) {
     var t = document.getElementById("log");
     var row = t.insertRow(1);
     row.insertCell(0).innerHTML = data.timestamp;
-    row.insertCell(1).innerHTML = data.message;
-//    var li = document.createElement("li");
-//    li.textContent = `[${data.timestamp}] ${data.message}`;
-//    document.getElementById("log").appendChild(li);
+    row.insertCell(1).innerHTML = data.category;
+    row.insertCell(2).innerHTML = data.step;
+    row.insertCell(3).innerHTML = data.message;
 });

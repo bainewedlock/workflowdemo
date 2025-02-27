@@ -16,7 +16,7 @@ class StepA : WorkItemStepAsync
 
         await WriteStringAssetAsync("dummy.txt", () =>
         {
-            return "hallo welt";
+            return "change this line manually to HELLO";
         });
 
         //Random random = new Random();

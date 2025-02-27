@@ -32,6 +32,7 @@ public abstract class WorkItemStepAsync : StepBodyAsync
         {
                 { "timestamp", DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") },
                 { "category", category },
+                { "step", Context.Step.Name },
                 { "message", message }
         }));
     }
