@@ -20,7 +20,7 @@ builder.Services
         .AddCookie(c => { c.Cookie.Name = "WorkerDemo"; });
 
 
-builder.Services.AddSignalR(); //.AddNewtonsoftJsonProtocol();
+builder.Services.AddSignalR();
 
 builder.Services.AddHostedService<SignalrService>();
 
