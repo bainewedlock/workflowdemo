@@ -1,10 +1,12 @@
-﻿namespace Workflow_Demo;
+﻿using WorkerDemo.Generic.WalzWorkflow;
 
-public class StepB : WorkItemStepAsync
+namespace WorkerDemo.Workflow_Demo;
+
+public class StepB : WalzStepBodyAsync
 {
     public override async Task RunAsync()
     {
-        var text = (await ReadStringAssetAsync("dummy.txt")).Trim();
+        var text = (await Assets.ReadStringAsync("dummy.txt")).Trim();
         if (text == "HELLO")
         {
             await LogAsync($"got correct text from asset: {text}");

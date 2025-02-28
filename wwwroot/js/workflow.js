@@ -1,7 +1,7 @@
 ﻿"use strict";
 
 var connection = new signalR.HubConnectionBuilder()
-    .withUrl('/workflowhub')
+    .withUrl('/walzworkflowhub')
     .withAutomaticReconnect()
     .build();
 

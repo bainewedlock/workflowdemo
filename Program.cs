@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using WorkerDemo.Generic.Workflows;
+using WorkerDemo.Generic.WalzWorkflow;
 using WorkerDemo.Model;
 using Workflow_Demo;
 using WorkflowCore.Interface;
@@ -11,13 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 var workflow_cs = builder.Configuration.GetConnectionString("workflow")!;
 
 builder.Services.AddSingleton(
-    builder.Configuration.GetSection("Workflow").Get<WorkflowConfig>()!);
+    builder.Configuration.GetSection("WalzWorkflow")
+        .Get<WalzWorkflowConfig>()!);
 
 builder.Services
     .AddWorkflow(x => x.UseSqlite(workflow_cs, true))
     .AddHostedService<WorkflowHost>()
     .AddDbContext<WorkflowContext>(opt => opt.UseSqlite(workflow_cs))
-    .UseWorkitemSteps()
+    .UseSuperWorkflows()
     .AddSingleton<ClientManager>()
     .AddRazorPages();
 
@@ -52,7 +53,7 @@ app.UseAuthorization();
 ///////////////////////////////////////////////////////////////////////////////
 
 app.MapRazorPages();
-app.MapHub<WorkflowHub>("/workflowhub");
+app.MapHub<WalzWorkflowHub>("/walzworkflowhub");
 
 ///////////////////////////////////////////////////////////////////////////////
 // Application specific stuff

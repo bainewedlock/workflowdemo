@@ -1,16 +1,20 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using WorkerDemo.Generic.Workflows;
 using WorkflowCore.Interface;
 
-public class WorkflowHub : Hub
+namespace WorkerDemo.Generic.WalzWorkflow;
+
+public class WalzWorkflowHub : Hub
 {
     readonly IWorkflowHost wf;
     readonly ClientManager clients;
+    readonly Assets.Factory assetsFactory;
 
-    public WorkflowHub(IWorkflowHost wf, ClientManager clients)
+    public WalzWorkflowHub(IWorkflowHost wf, ClientManager clients,
+        Assets.Factory assetsFactory)
     {
         this.wf = wf;
         this.clients = clients;
+        this.assetsFactory = assetsFactory;
     }
 
     public override Task OnDisconnectedAsync(Exception? exception)
@@ -26,8 +30,11 @@ public class WorkflowHub : Hub
     {
         clients.Join(Clients.Caller, workflow_id);
     }
+
     public void Resume(string workflow_id)
     {
+        var a = assetsFactory(workflow_id);
+        a.LogAsync(LogCategory.Workflow, $"user resume").Wait();
         // TODO: identify user
         wf.ResumeWorkflow(workflow_id);
     }
