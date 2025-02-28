@@ -18,7 +18,7 @@ builder.Services
     .AddWorkflow(x => x.UseSqlite(workflow_cs, true))
     .AddHostedService<WorkflowHost>()
     .AddDbContext<WorkflowContext>(opt => opt.UseSqlite(workflow_cs))
-    .UseSuperWorkflows()
+    .AddWalzWorkflows()
     .AddSingleton<ClientManager>()
     .AddRazorPages();
 

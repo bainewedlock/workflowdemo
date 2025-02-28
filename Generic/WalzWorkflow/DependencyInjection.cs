@@ -5,7 +5,7 @@ namespace WorkerDemo.Generic.WalzWorkflow;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection UseSuperWorkflows(
+    public static IServiceCollection AddWalzWorkflows(
         this IServiceCollection services)
     {
         var step_types = Assembly.GetExecutingAssembly().GetTypes()
