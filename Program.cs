@@ -1,4 +1,3 @@
-using System.Reflection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using WorkerDemo.Generic.Workflows;
@@ -19,6 +18,7 @@ builder.Services
     .AddHostedService<WorkflowHost>()
     .AddDbContext<WorkflowContext>(opt => opt.UseSqlite(workflow_cs))
     .UseWorkitemSteps()
+    .AddSingleton<ClientManager>()
     .AddRazorPages();
 
 builder.Services
@@ -27,10 +27,9 @@ builder.Services
 
 builder.Services.AddSignalR();
 
-builder.Services.AddSingleton<ClientManager>();
+///////////////////////////////////////////////////////////////////////////////
 
 var app = builder.Build();
-
 
 if (!app.Environment.IsDevelopment())
 {
@@ -56,9 +55,12 @@ app.MapRazorPages();
 app.MapHub<WorkflowHub>("/workflowhub");
 
 ///////////////////////////////////////////////////////////////////////////////
+// Application specific stuff
+///////////////////////////////////////////////////////////////////////////////
 var wf = app.Services.GetService<IWorkflowHost>()!;
 wf.RegisterWorkflow<DemoWorkflow>();
 ///////////////////////////////////////////////////////////////////////////////
+// make sure db directory exists
 var dir = Path.GetDirectoryName(workflow_cs.Split("=", 2)[1])!;
 if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 ///////////////////////////////////////////////////////////////////////////////

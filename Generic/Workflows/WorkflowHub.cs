@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.SignalR;
 using WorkerDemo.Generic.Workflows;
 using WorkflowCore.Interface;
@@ -34,7 +33,7 @@ public class WorkflowHub : Hub
 
     public void Resume(string workflow_id)
     {
-        //var u = User
+        // TODO: identify user
         wf.ResumeWorkflow(workflow_id);
     }
 }
