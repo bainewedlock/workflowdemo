@@ -140,6 +140,45 @@
 
     <a asp-page="./Index">Back to List</a>
 
-    <input id="workflow_id" type="hidden" value="@Model.Workflow.InstanceId" /> <!-- damit ui die workflow id kennt -->
+    <!-- damit ui die workflow id kennt -->
+    <input id="workflow_id" type="hidden" value="@Model.Workflow.InstanceId" /> 
+
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/workflow.js"></script>
+
+    <script type="text/javascript">
+"use strict";
+
+var connection = new signalR.HubConnectionBuilder()
+    .withUrl('/walzworkflowhub')
+    .withAutomaticReconnect()
+    .build();
+
+function get_workflow_id() {
+    return document.querySelector('#workflow_id').value;
+}
+
+connection.start().then(function () {
+    connection.invoke('ClientJoin', get_workflow_id()).catch(function (err) {
+        return console.error(err.toString());
+    });
+}).catch(function (err) {
+    return console.error(err.toString());
+});
+
+function resume_workflow() {
+    connection.invoke("Resume", get_workflow_id()).catch(function (err) {
+        return console.error(err.toString());
+    });
+}
+
+connection.on("Log", function (data) {
+    if(document.getElementById("empty_log"))
+        document.getElementById("empty_log").remove();
+    var t = document.getElementById("log");
+    var row = t.insertRow(1);
+    row.insertCell(0).innerHTML = data.timestamp;
+    row.insertCell(1).innerHTML = data.category;
+    row.insertCell(2).innerHTML = data.step;
+    row.insertCell(3).innerHTML = data.message;
+});
+    </script>
