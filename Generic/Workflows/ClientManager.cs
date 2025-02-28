@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.SignalR;
+using WorkflowCore.Interface;
 
 namespace WorkerDemo.Generic.Workflows
 {
@@ -29,5 +30,6 @@ namespace WorkerDemo.Generic.Workflows
         {
             Clients.Remove(caller, out var _);
         }
+
     }
 }

@@ -32,20 +32,30 @@ public abstract class WorkItemStepAsync : StepBodyAsync
     /// </summary>
     /// <param name="category">step|asset</param>
     /// <param name="message">any line of text</param>
-    Task LogAsync(LogCategory category, string message)
+    async Task LogAsync(LogCategory category, string message)
     {
+        var timestamp = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
+        var category_s = category.ToString();
+        var step = stepctx.Step.Name;
+
         var m = new WorkflowMessage(
                     workflow_id: stepctx.Workflow.Id,
                     key: "Log",
                     data: new Dictionary<string, object>
                 {
-                { "timestamp", DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") },
-                { "category", category.ToString() },
-                { "step", stepctx.Step.Name },
+                { "timestamp", timestamp },
+                { "category", category_s },
+                { "step", step },
                 { "message", message }
                 });
 
-        return ClientManager.PublishAsync(m);
+        var line = String.Join(" ",
+            timestamp,
+            $"[{category_s}|{step}]",
+            message);
+
+        await AppendLogAsync(line);
+        await ClientManager.PublishAsync(m);
     }
 
     /// <summary>
@@ -68,8 +78,7 @@ public abstract class WorkItemStepAsync : StepBodyAsync
     /// <returns>File content as string</returns>
     protected async Task<string> ReadStringAssetAsync(string filename)
     {
-        var dir = InitAssetDir();
-        var path = Path.Combine(dir, filename);
+        var path = Path.Combine(InitAssetDir(), filename);
         return await File.ReadAllTextAsync(path);
     }
 
@@ -81,8 +90,7 @@ public abstract class WorkItemStepAsync : StepBodyAsync
     protected async Task WriteStringAssetAsync(string filename,
         Func<string> create)
     {
-        var dir = InitAssetDir();
-        var path = Path.Combine(dir, filename);
+        var path = Path.Combine(InitAssetDir(), filename);
         if (Path.Exists(path))
         {
             await LogAsync(LogCategory.Asset,
@@ -110,5 +118,16 @@ public abstract class WorkItemStepAsync : StepBodyAsync
             Directory.CreateDirectory(path);
         }
         return path;
+    }
+
+    /// <summary>
+    /// Append one line to log
+    /// </summary>
+    /// <param name="message">preformatted line</param>
+    /// <returns></returns>
+    Task AppendLogAsync(string line)
+    {
+        var path = Path.Combine(InitAssetDir(), "logfile.txt");
+        return File.AppendAllLinesAsync(path, [line]);
     }
 }
