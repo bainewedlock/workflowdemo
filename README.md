@@ -1,6 +1,7 @@
 
 ## TODO
-- resume button auto hide/enable
+- workflow_state beim betritt der seite gleich erzeugen wie beim publish
+- bei statuswechsel sollte workflow_state gepublisht werden (wegen status==1)_
 - die Log einträge eines workflows sollten irgendwie persistiert werden
 - workflow statusänderungen sollten live sichtbar sein
 	- evtl bekommt man die nur per middleware mit?

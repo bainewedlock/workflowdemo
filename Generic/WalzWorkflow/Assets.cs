@@ -21,7 +21,7 @@ public class Assets
     /// Create asset dir for workflow if necessary
     /// </summary>
     /// <returns>path</returns>
-    public string InitDir()
+    string InitDir()
     {
         var path = Path.Combine(config.AssetsBaseDir, wf_instance_id);
         if (!Directory.Exists(path))

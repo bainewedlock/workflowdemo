@@ -135,9 +135,13 @@
  *@ 
 
     }
-    <button class="btn btn-info" onclick="resume_workflow();">Resume</button>
 
-    <a asp-page="./Index">Back to List</a>
+    <div>
+        <button style="visibility: hidden;" id="resume_btn" class="btn btn-info" onclick="resume_workflow();">Resume</button>
+    </div>
+    <div>
+        <a asp-page="./Index">Back to List</a>
+    </div>
 
     <!-- damit ui die workflow id kennt -->
     <input id="workflow_id" type="hidden" value="@Model.Workflow.InstanceId" /> 
@@ -169,6 +173,12 @@ function resume_workflow() {
         return console.error(err.toString());
     });
 }
+
+connection.on("WorkflowState", function (data) {
+    console.log("workflowstate", data);
+    var visible_1 = data.status == 1 ? "visible" : "hidden";
+    document.getElementById("resume_btn").style.visibility = visible_1;
+});
 
 connection.on("Log", function (data) {
     if(document.getElementById("empty_log"))
