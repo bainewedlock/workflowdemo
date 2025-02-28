@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using WorkerDemo.Generic.Workflows;
 
 namespace Workflow_Demo;
 
@@ -11,7 +12,7 @@ class StepA : WorkItemStepAsync
         for(int i=0; i< 5; i++)
         {
             await Task.Delay(500);
-            Log($"looping {i+1}/10");
+            await LogAsync($"looping {i+1}/10");
         }
 
         await WriteStringAssetAsync("dummy.txt", () =>

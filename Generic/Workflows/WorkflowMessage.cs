@@ -1,4 +1,4 @@
-﻿namespace WorkerDemo.SignalR
+﻿namespace WorkerDemo.Generic.Workflows
 {
     public record WorkflowMessage(
         string workflow_id,

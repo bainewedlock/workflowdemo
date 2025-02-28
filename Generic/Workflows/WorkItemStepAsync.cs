@@ -1,40 +1,52 @@
-﻿using WorkerDemo.SignalR;
+﻿using System.Reflection;
+using WorkerDemo.Generic.Workflows;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
 public abstract class WorkItemStepAsync : StepBodyAsync
 {
     public WorkflowConfig WorkflowConfig { get; set; } = null!;
-
-    IStepExecutionContext Context { get; set; } = null!;
+    public ClientManager ClientManager { get; set; } = null!;
+    IStepExecutionContext stepctx { get; set; } = null!;
 
     public sealed override async Task<ExecutionResult> RunAsync(
-        IStepExecutionContext context)
+        IStepExecutionContext stepctx)
     {
-        Context = context;
+        this.stepctx = stepctx;
         await RunAsync();
         return ExecutionResult.Next();
     }
 
     public abstract Task RunAsync();
 
-    protected void Log(string message)
+    /// <summary>
+    /// Log Step message
+    /// </summary>
+    /// <param name="message">any line of text</param>
+    protected Task LogAsync(string message)
     {
-        Log("step", message);
+        return LogAsync(LogCategory.Step, message);
     }
 
-    void Log(string category, string message)
+    /// <summary>
+    /// Write to current workflows log
+    /// </summary>
+    /// <param name="category">step|asset</param>
+    /// <param name="message">any line of text</param>
+    Task LogAsync(LogCategory category, string message)
     {
-        SignalrService.Enqueue(new WorkflowMessage(
-            workflow_id: Context.Workflow.Id,
-            key: "Log",
-            data: new Dictionary<string, object>
-        {
+        var m = new WorkflowMessage(
+                    workflow_id: stepctx.Workflow.Id,
+                    key: "Log",
+                    data: new Dictionary<string, object>
+                {
                 { "timestamp", DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") },
-                { "category", category },
-                { "step", Context.Step.Name },
+                { "category", category.ToString() },
+                { "step", stepctx.Step.Name },
                 { "message", message }
-        }));
+                });
+
+        return ClientManager.PublishAsync(m);
     }
 
     /// <summary>
@@ -74,21 +86,26 @@ public abstract class WorkItemStepAsync : StepBodyAsync
         var path = Path.Combine(dir, filename);
         if (Path.Exists(path))
         {
-            Log("asset", $"string asset already exists: {filename}");
+            await LogAsync(LogCategory.Asset,
+                $"string asset already exists: {filename}");
         }
         else
         {
             var content = create(); // TODO: make create() async
             await File.WriteAllTextAsync(path, content);
-            Log("asset",
+            await LogAsync(LogCategory.Asset,
                 $"string asset written: {filename} ({content.Length})");
         }
     }
 
+    /// <summary>
+    /// Create asset dir for workflow if necessary
+    /// </summary>
+    /// <returns>path</returns>
     string InitAssetDir()
     {
         var path = Path.Combine(
-            WorkflowConfig.AssetsBaseDir, Context.Workflow.Id);
+            WorkflowConfig.AssetsBaseDir, stepctx.Workflow.Id);
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);

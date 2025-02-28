@@ -1,7 +1,8 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using WorkerDemo.Generic.Workflows;
 using WorkerDemo.Model;
-using WorkerDemo.SignalR;
 using Workflow_Demo;
 using WorkflowCore.Interface;
 using WorkflowCore.Services;
@@ -10,34 +11,23 @@ var builder = WebApplication.CreateBuilder(args);
 
 var workflow_cs = builder.Configuration.GetConnectionString("workflow")!;
 
+builder.Services.AddSingleton(
+    builder.Configuration.GetSection("Workflow").Get<WorkflowConfig>()!);
+
 builder.Services
     .AddWorkflow(x => x.UseSqlite(workflow_cs, true))
     .AddHostedService<WorkflowHost>()
     .AddDbContext<WorkflowContext>(opt => opt.UseSqlite(workflow_cs))
+    .UseWorkitemSteps()
     .AddRazorPages();
-
-builder.Services.AddTransient(typeof(StepA), svc => {
-    var step = new StepA();
-    step.WorkflowConfig = svc.GetService<WorkflowConfig>()!;
-    return step;
-}); 
-
-builder.Services.AddTransient(typeof(StepB), svc => {
-    var step = new StepB();
-    step.WorkflowConfig = svc.GetService<WorkflowConfig>()!;
-    return step;
-}); 
 
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie(c => { c.Cookie.Name = "WorkerDemo"; });
 
-builder.Services.AddSingleton(
-    builder.Configuration.GetSection("Workflow").Get<WorkflowConfig>()!);
-
 builder.Services.AddSignalR();
 
-builder.Services.AddHostedService<SignalrService>();
+builder.Services.AddSingleton<ClientManager>();
 
 var app = builder.Build();
 

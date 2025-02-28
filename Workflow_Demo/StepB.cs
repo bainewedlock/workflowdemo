@@ -7,11 +7,11 @@ public class StepB : WorkItemStepAsync
         var text = (await ReadStringAssetAsync("dummy.txt")).Trim();
         if (text == "HELLO")
         {
-            Log($"got correct text from asset: {text}");
+            await LogAsync($"got correct text from asset: {text}");
         }
         else
         {
-            Log($"got unexpected text from asset: {text}");
+            await LogAsync($"got unexpected text from asset: {text}");
             throw new Exception("simulated exception");
         }
     }
