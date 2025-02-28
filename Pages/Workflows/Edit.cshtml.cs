@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using WorkerDemo.Model;
+using WorkerDemo.Generic.WorkflowEF;
 using WorkflowCore.Interface;
 
 namespace WorkerDemo.Pages.Workflows

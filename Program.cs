@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using WorkerDemo.Generic.WalzWorkflow;
-using WorkerDemo.Model;
+using WorkerDemo.Generic.WorkflowEF;
 using Workflow_Demo;
 using WorkflowCore.Interface;
 using WorkflowCore.Services;

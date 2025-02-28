@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace WorkerDemo.Model;
+namespace WorkerDemo.Generic.WorkflowEF;
 
 public partial class WorkflowContext : DbContext
 {

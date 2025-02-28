@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace WorkerDemo.Model;
+﻿namespace WorkerDemo.Generic.WorkflowEF;
 
 public partial class Workflow
 {
