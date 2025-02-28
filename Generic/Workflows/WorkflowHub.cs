@@ -17,14 +17,7 @@ public class WorkflowHub : Hub
 
     public override Task OnConnectedAsync()
     {
-        Clients.All.SendAsync("action", "ähh");
         return base.OnConnectedAsync();
-    }
-
-    public override Task OnDisconnectedAsync(Exception? exception)
-    {
-        clients.Disconnected(Clients.Caller);
-        return base.OnDisconnectedAsync(exception);
     }
 
     public void ClientJoin(string workflow_id)
@@ -33,8 +26,15 @@ public class WorkflowHub : Hub
         Debug.WriteLine($"ClientJoin {workflow_id}");
     }
 
+    public override Task OnDisconnectedAsync(Exception? exception)
+    {
+        clients.Disconnected(Clients.Caller);
+        return base.OnDisconnectedAsync(exception);
+    }
+
     public void Resume(string workflow_id)
     {
+        //var u = User
         wf.ResumeWorkflow(workflow_id);
     }
 }
