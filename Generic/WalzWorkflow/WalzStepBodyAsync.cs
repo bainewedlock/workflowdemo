@@ -8,13 +8,14 @@ public abstract class WalzStepBodyAsync : StepBodyAsync
     public WalzWorkflowConfig WorkflowConfig { get; set; } = null!;
     public ClientManager ClientManager { get; set; } = null!;
     public Assets.Factory AssetsFactory { get; set; } = null!;
-    protected Assets Assets = null!;
+    protected Assets Assets { get; set; } = null!;
+    WorkflowStep Step { get; set; } = null!;
 
     public sealed override async Task<ExecutionResult> RunAsync(
         IStepExecutionContext stepctx)
     {
         Assets = AssetsFactory(stepctx.Workflow.Id);
-        Assets.Step = stepctx.Step;
+        Step = stepctx.Step;
 
         await RunAsync();
 
@@ -32,7 +33,7 @@ public abstract class WalzStepBodyAsync : StepBodyAsync
     /// <param name="message">any line of text</param>
     protected Task LogAsync(string message)
     {
-        return Assets.LogAsync(LogCategory.Step, message);
+        return Assets.LogAsync(Step, message);
     }
 
 }

@@ -9,8 +9,6 @@ public class Assets
     readonly string wf_instance_id;
     readonly ClientManager client_manager;
 
-    public WorkflowStep Step { get; internal set; } = null!;
-
     public Assets(WalzWorkflowConfig config, string workflow_instance_id,
         ClientManager client_manager)
     {
@@ -34,15 +32,30 @@ public class Assets
     }
 
     /// <summary>
-    /// Write to current workflow log
+    /// Write to current workflow log (from a workflow step)
     /// </summary>
-    /// <param name="category">step|asset</param>
-    /// <param name="message">any line of text</param>
-    internal async Task LogAsync(LogCategory category, string message)
+    /// <param name="step"></param>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public Task LogAsync(WorkflowStep step, string message)
+    {
+        return LogAsync($"Step:{step.Name}", message);
+    }
+
+    /// <summary>
+    /// Write to current workflow log (with a custom category)
+    /// </summary>
+    /// <param name="category"></param>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public Task LogAsync(LogCategory category, string message)
+    {
+        return LogAsync(category.ToString(), message);
+    }
+
+    async Task LogAsync(string context, string message)
     {
         var timestamp = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
-        var category_s = category.ToString();
-        var step_s = Step?.Name ?? "";
 
         var m = new WalzWorkflowMessage(
                     workflow_id: wf_instance_id,
@@ -50,17 +63,11 @@ public class Assets
                     data: new Dictionary<string, object>
                 {
             { "timestamp", timestamp },
-            { "category", category_s },
-            { "step", step_s },
+            { "context", context },
             { "message", message }
                 });
 
-        var line = string.Join(" ",
-            timestamp,
-            $"[{category_s}|{step_s}]",
-            message);
-
-        await AppendLogAsync(line);
+        await AppendLogAsync($"{timestamp} [{context}] {message}");
         await client_manager.PublishAsync(m);
     }
 
