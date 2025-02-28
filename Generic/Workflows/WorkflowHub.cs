@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using WorkerDemo.Generic.Workflows;
 using WorkflowCore.Interface;
 
@@ -14,23 +13,19 @@ public class WorkflowHub : Hub
         this.clients = clients;
     }
 
-    public override Task OnConnectedAsync()
-    {
-        return base.OnConnectedAsync();
-    }
-
-    public void ClientJoin(string workflow_id)
-    {
-        clients.Join(Clients.Caller, workflow_id);
-        Debug.WriteLine($"ClientJoin {workflow_id}");
-    }
-
     public override Task OnDisconnectedAsync(Exception? exception)
     {
         clients.Disconnected(Clients.Caller);
         return base.OnDisconnectedAsync(exception);
     }
 
+    ////////////////////////////////////////////////////////////
+    // SIGNALR CLIENT FUNCTIONS
+    ////////////////////////////////////////////////////////////
+    public void ClientJoin(string workflow_id)
+    {
+        clients.Join(Clients.Caller, workflow_id);
+    }
     public void Resume(string workflow_id)
     {
         // TODO: identify user
