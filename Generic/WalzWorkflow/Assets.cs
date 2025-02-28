@@ -44,7 +44,7 @@ public class Assets
         var category_s = category.ToString();
         var step_s = Step?.Name ?? "";
 
-        var m = new WorkflowMessage(
+        var m = new WalzWorkflowMessage(
                     workflow_id: wf_instance_id,
                     key: "Log",
                     data: new Dictionary<string, object>

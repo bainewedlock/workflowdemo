@@ -1,6 +1,6 @@
 ﻿namespace WorkerDemo.Generic.WalzWorkflow;
 
-public record WorkflowMessage(
+public record WalzWorkflowMessage(
     string workflow_id,
     string key,
     object data);

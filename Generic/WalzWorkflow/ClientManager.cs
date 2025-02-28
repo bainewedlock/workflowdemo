@@ -9,7 +9,7 @@ public class ClientManager // : BackgroundService
     ConcurrentDictionary<ISingleClientProxy, string> Clients = new();
     //static BufferBlock<WorkflowMessage> Queue = new();
 
-    public async Task PublishAsync(WorkflowMessage m)
+    public async Task PublishAsync(WalzWorkflowMessage m)
     {
         foreach (var c in Clients)
         {
