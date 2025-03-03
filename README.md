@@ -1,6 +1,7 @@
 
 ## TODO
-- die Log einträge eines workflows sollten irgendwie persistiert werden
+- Log Tail auf der Workflow Page
+- Workflow Page schöner machen (Log + Error Tabellen scrollbar)
 - BK wäre gut, bei Assetverzeichnis und als Workflowinstance_id wenn möglich_
   und beim betreten eines Workflow angezeigt werden
 - auto-archivieren / löschen alter workflows inkl assets
