@@ -122,20 +122,6 @@
         </table>
     </div>
 
-    @if (Model.Workflow.Status == 1) // 1:suspended
-    {
-@*         <form method="post">
-            <button class="btn btn-info"
-                    asp-page-handler="Resume"
-                    asp-route-instanceId="@Model.Workflow.InstanceId"
-                    type="submit">
-                Resume
-            </button>
-        </form>
- *@ 
-
-    }
-
     <div>
         <button style="visibility: hidden;" id="resume_btn" class="btn btn-info" onclick="resume_workflow();">Resume</button>
     </div>
@@ -189,9 +175,5 @@ connection.on("Log", function (data) {
     row.insertCell(0).innerHTML = data.timestamp;
     row.insertCell(1).innerHTML = data.context;
     row.insertCell(2).innerHTML = data.message;
-});
-
-connection.on("EnableResume", function (data) {
-    document.getElementById("resume_btn").style.visibility = "visible";
 });
     </script>

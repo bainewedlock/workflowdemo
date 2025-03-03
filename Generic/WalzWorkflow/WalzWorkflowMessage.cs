@@ -3,4 +3,4 @@
 public record WalzWorkflowMessage(
     string workflow_id,
     string key,
-    object data);
+    Dictionary<string, object> data);

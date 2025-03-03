@@ -19,7 +19,7 @@ builder.Services
     .AddHostedService<WorkflowHost>()
     .AddDbContext<WorkflowContext>(opt => opt.UseSqlite(workflow_cs))
     .AddWalzWorkflows()
-    .AddWorkflowMiddleware<EnableResumeButtonMiddleware>()
+    .AddWorkflowMiddleware<WorkflowStateMiddleware>()
     .AddSingleton<ClientManager>()
     .AddRazorPages();
 

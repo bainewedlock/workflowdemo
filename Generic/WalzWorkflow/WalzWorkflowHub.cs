@@ -34,23 +34,27 @@ public class WalzWorkflowHub : Hub
     {
         clients.Join(Clients.Caller, workflow_id);
 
-        // TODO: stattdessen im Controller mitgeben
-        await clients.PublishAsync(new WalzWorkflowMessage
-        (
-            workflow_id: workflow_id,
-            key: "WorkflowState",
-            data: await GetWorkflowState(workflow_id)
-        ));
+        // TODO: stattdessen im Controller mitgeben, um Delay zu vermeiden?
+        await clients.PublishAsync(await GetWorkflowState(db, workflow_id));
     }
 
-    async Task<object> GetWorkflowState(string workflow_id)
+    public static async Task<WalzWorkflowMessage> GetWorkflowState(WorkflowContext db, string workflow_id)
     {
         var wf = await db.Workflows.SingleAsync(
             x => x.InstanceId == new Guid(workflow_id));
-        return new Dictionary<string, object>
+
+        var data = new Dictionary<string, object>
         {
-            ["status"] = wf.Status
+            ["status"] = wf.Status,
+            ["completion_time"] = wf.CompleteTime != null ? wf.CompleteTime.ToString() : ""
         };
+
+        return new WalzWorkflowMessage
+        (
+            workflow_id: workflow_id,
+            key: "WorkflowState",
+            data: data
+        );
     }
 
     public async Task Resume(string workflow_id)
