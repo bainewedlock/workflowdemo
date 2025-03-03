@@ -1,4 +1,6 @@
-﻿namespace WorkerDemo.Generic.WorkflowEF;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WorkerDemo.Generic.WorkflowEF;
 
 public partial class Workflow
 {
@@ -6,6 +8,7 @@ public partial class Workflow
 
     public Guid InstanceId { get; set; }
 
+    [Display(Name = "Workflow")]
     public string? WorkflowDefinitionId { get; set; }
 
     public int Version { get; set; }
@@ -18,8 +21,10 @@ public partial class Workflow
 
     public string? Data { get; set; }
 
+    [Display(Name = "Start")]
     public DateTime CreateTime { get; set; }
 
+    [Display(Name = "End")]
     public DateTime? CompleteTime { get; set; }
 
     public int Status { get; set; }

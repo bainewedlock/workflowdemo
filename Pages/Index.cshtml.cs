@@ -14,6 +14,7 @@ namespace WorkerDemo.Pages
         public IActionResult OnGet()
         {
             return RedirectToPage("Workflows/Index");
+            //return Page();
         }
     }
 }

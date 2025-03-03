@@ -8,62 +8,60 @@
 <h1>Workflows</h1>
 
 <p>
-<a class="btn btn-info" href="demo">Start Demo Workflow</a>
-<form method="post" asp-page-handler="Cleanup">
-    <button type="submit" class="btn btn-warning">Remove all finished</button>
-</form>
+    <a class="btn btn-info" href="demo">Start Demo Workflow</a>
+    <form method="post" asp-page-handler="Cleanup">
+        <button type="submit" class="btn btn-warning">Remove all finished</button>
+    </form>
 </p>
 
-<table class="table">
-    <thead>
+<table class="table table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Workflow[0].WorkflowDefinitionId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Workflow[0].Status)
+        </th>
+        <th>
+            Instance
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Workflow[0].CreateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Workflow[0].CompleteTime)
+        </th>
+    </tr>
+    @foreach (var item in Model.Workflow) {
         <tr>
-            <th>
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Workflow[0].WorkflowDefinitionId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Workflow[0].Version)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Workflow[0].NextExecution)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Workflow[0].CreateTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Workflow[0].CompleteTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Workflow[0].Status)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Workflow) {
-        <tr>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.InstanceId">Edit</a>
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.WorkflowDefinitionId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Version)
+                @switch (item.Status)
+                {
+                    case 1:
+                        <span>Suspended</span>
+                        break;
+                    case 2:
+                        <span>Complete</span>
+                        break;
+                    default:
+                        <span>Pending</span>
+                        break;
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NextExecution)
+                <a asp-page="./Edit" asp-route-id="@item.InstanceId">
+                    open
+                </a>
             </td>
-            <td>
+             <td>
                 @Html.DisplayFor(modelItem => item.CreateTime)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CompleteTime)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
         </tr>
-}
-    </tbody>
+    }
 </table>
