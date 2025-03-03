@@ -20,12 +20,9 @@ public class WorkflowStateMiddleware : IWorkflowMiddleware
     {
         var msg = await WalzWorkflowHub.GetWorkflowState(db, workflow.Id);
 
-        // state of suspended workflows is not yet in db at this point
+        // state of workflow is not yet in db at this point
         // so we set it manually
-        if (workflow.Status == WorkflowStatus.Suspended)
-        {
-            msg.data["status"] = 1;
-        }
+        msg.data["status"] = (int)workflow.Status;
 
         await clients.PublishAsync(msg);
 

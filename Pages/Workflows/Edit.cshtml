@@ -68,7 +68,8 @@
             @Html.DisplayNameFor(model => model.Workflow.Status)
         </dt>
         <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Workflow.Status)
+            @* @Html.DisplayFor(model => model.Workflow.Status) *@
+            <span id="wf_status"></span>
         </dd>
     </dl>
 </div>
@@ -165,6 +166,7 @@ connection.on("WorkflowState", function (data) {
     console.log("workflowstate", data);
     var visible_1 = data.status == 1 ? "visible" : "hidden";
     document.getElementById("resume_btn").style.visibility = visible_1;
+    document.getElementById("wf_status").innerHTML = data.status;
 });
 
 connection.on("Log", function (data) {
