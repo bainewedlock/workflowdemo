@@ -41,18 +41,21 @@ public class WalzWorkflowHub : Hub
 
     public static async Task<WalzWorkflowMessage> GetWorkflowState(
         WorkflowContext db, string workflow_id,
-        WorkflowStatus? overrideStatus = null)
+        WorkflowStatus? overrideStatus = null,
+        DateTime? overrideCompleteTime = null)
     {
         var wf = await db.Workflows.SingleAsync(
             x => x.InstanceId == new Guid(workflow_id));
 
         var status = overrideStatus ?? (WorkflowStatus)wf.Status;
 
+        var complete_time = overrideCompleteTime ?? wf.CompleteTime;
+
         var data = new Dictionary<string, object>
         {
             ["status"] = status.ToString(),
-            ["completion_time"] = wf.CompleteTime != null ?
-                                  wf.CompleteTime.ToString()! : "",
+            ["complete_time"] = complete_time != null ?
+                                complete_time.ToString()! : "-",
             ["can_resume"] = status == WorkflowStatus.Suspended
         };
 

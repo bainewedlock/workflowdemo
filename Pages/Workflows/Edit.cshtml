@@ -38,7 +38,7 @@
             @Html.DisplayNameFor(model => model.Workflow.CompleteTime)
         </dt>
         <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Workflow.CompleteTime)
+            <span id="wf_complete_time"></span>
         </dd>
         <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.Workflow.Status)
@@ -142,6 +142,7 @@ connection.on("WorkflowState", function (data) {
     var visible_1 = data.can_resume ? "visible" : "hidden";
     document.getElementById("resume_btn").style.visibility = visible_1;
     document.getElementById("wf_status").innerHTML = data.status;
+    document.getElementById("wf_complete_time").innerHTML = data.complete_time;
 });
 
 connection.on("Log", function (data) {
