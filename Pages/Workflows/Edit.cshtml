@@ -169,6 +169,7 @@ connection.start().then(function () {
 });
 
 function resume_workflow() {
+    document.getElementById("resume_btn").style.visibility = "hidden";
     connection.invoke("Resume", get_workflow_id()).catch(function (err) {
         return console.error(err.toString());
     });
@@ -188,5 +189,9 @@ connection.on("Log", function (data) {
     row.insertCell(0).innerHTML = data.timestamp;
     row.insertCell(1).innerHTML = data.context;
     row.insertCell(2).innerHTML = data.message;
+});
+
+connection.on("EnableResume", function (data) {
+    document.getElementById("resume_btn").style.visibility = "visible";
 });
     </script>
