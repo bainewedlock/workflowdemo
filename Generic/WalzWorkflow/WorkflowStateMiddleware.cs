@@ -18,11 +18,10 @@ public class WorkflowStateMiddleware : IWorkflowMiddleware
 
     public async Task HandleAsync(WorkflowInstance workflow, WorkflowDelegate next)
     {
-        var msg = await WalzWorkflowHub.GetWorkflowState(db, workflow.Id);
-
         // state of workflow is not yet in db at this point
-        // so we set it manually
-        msg.data["status"] = (int)workflow.Status;
+        // so we have to set it manually
+        var msg = await WalzWorkflowHub.GetWorkflowState(db, workflow.Id,
+            workflow.Status);
 
         await clients.PublishAsync(msg);
 

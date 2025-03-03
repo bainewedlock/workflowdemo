@@ -29,30 +29,6 @@
             @Html.DisplayFor(model => model.Workflow.Version)
         </dd>
         <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.Workflow.Description)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Workflow.Description)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.Workflow.Reference)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Workflow.Reference)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.Workflow.NextExecution)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Workflow.NextExecution)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.Workflow.Data)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Workflow.Data)
-        </dd>
-        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.Workflow.CreateTime)
         </dt>
         <dd class="col-sm-9">
@@ -68,7 +44,6 @@
             @Html.DisplayNameFor(model => model.Workflow.Status)
         </dt>
         <dd class="col-sm-9">
-            @* @Html.DisplayFor(model => model.Workflow.Status) *@
             <span id="wf_status"></span>
         </dd>
     </dl>
@@ -164,7 +139,7 @@ function resume_workflow() {
 
 connection.on("WorkflowState", function (data) {
     console.log("workflowstate", data);
-    var visible_1 = data.status == 1 ? "visible" : "hidden";
+    var visible_1 = data.can_resume ? "visible" : "hidden";
     document.getElementById("resume_btn").style.visibility = visible_1;
     document.getElementById("wf_status").innerHTML = data.status;
 });

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WorkerDemo.Generic.WorkflowEF;
 using WorkflowCore.Interface;
+using WorkflowCore.Models;
 
 namespace WorkerDemo.Generic.WalzWorkflow;
 
@@ -38,15 +39,21 @@ public class WalzWorkflowHub : Hub
         await clients.PublishAsync(await GetWorkflowState(db, workflow_id));
     }
 
-    public static async Task<WalzWorkflowMessage> GetWorkflowState(WorkflowContext db, string workflow_id)
+    public static async Task<WalzWorkflowMessage> GetWorkflowState(
+        WorkflowContext db, string workflow_id,
+        WorkflowStatus? overrideStatus = null)
     {
         var wf = await db.Workflows.SingleAsync(
             x => x.InstanceId == new Guid(workflow_id));
 
+        var status = overrideStatus ?? (WorkflowStatus)wf.Status;
+
         var data = new Dictionary<string, object>
         {
-            ["status"] = wf.Status,
-            ["completion_time"] = wf.CompleteTime != null ? wf.CompleteTime.ToString() : ""
+            ["status"] = status.ToString(),
+            ["completion_time"] = wf.CompleteTime != null ?
+                                  wf.CompleteTime.ToString()! : "",
+            ["can_resume"] = status == WorkflowStatus.Suspended
         };
 
         return new WalzWorkflowMessage
