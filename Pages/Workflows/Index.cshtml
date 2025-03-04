@@ -5,24 +5,20 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Workflows</h1>
-
-<p>
-    <a class="btn btn-info" href="demo">Start Demo Workflow</a>
-    <form method="post" asp-page-handler="Cleanup">
-        <button type="submit" class="btn btn-warning">Remove all finished</button>
+<h1>
+    <form method="post" asp-page-handler="Cleanup" class="d-flex-row">
+        <span>Workflows</span>
+        <a class="btn btn-primary" href="demo">Start Demo Workflow</a>
+        <button type="submit" class="btn btn-danger">Remove all finished</button>
     </form>
-</p>
+</h1>
 
-<table class="table table-hover">
+<table class="table table-hover table-striped">
     <tr>
-        <th class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Workflow[0].WorkflowDefinitionId)
-        </th>
         <th class="col-sm-2">
             @Html.DisplayNameFor(model => model.Workflow[0].Status)
         </th>
-        <th class="col-sm-4">
+        <th class="col-sm-6">
             @Html.DisplayNameFor(model => model.Workflow[0].InstanceId)
         </th>
         <th class="col-sm-2">
@@ -35,16 +31,11 @@
     @foreach (var item in Model.Workflow) {
         <tr class="row-link" onclick="window.location='./Workflows/Edit?id=@item.InstanceId';">
             <td>
-                @Html.DisplayFor(modelItem => item.WorkflowDefinitionId)
-            </td>
-            <td>
                 @await Html.PartialAsync("_WorkflowStatusPartial", item.Status)
             </td>
             <td>
-                <small class="text-muted">
-                @Html.DisplayFor(modelItem => item.InstanceId)
-                </small>
-
+                @Html.DisplayFor(m => item.WorkflowDefinitionId)
+                @Html.DisplayFor(m => item.InstanceId)
             </td>
              <td>
                 @Html.DisplayFor(modelItem => item.CreateTime)
