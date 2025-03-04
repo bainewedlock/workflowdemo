@@ -6,6 +6,7 @@ public partial class Workflow
 {
     public int PersistenceId { get; set; }
 
+    [Display(Name = "Instance")]
     public Guid InstanceId { get; set; }
 
     [Display(Name = "Workflow")]

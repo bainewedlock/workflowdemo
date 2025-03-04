@@ -1,8 +1,7 @@
 
 ## TODO
 - Log Tail auf der Workflow Page
-- Workflow Page schöner machen (Log + Error Tabellen scrollbar)#
-  - ganze zeile klickbar
+- Workflow Page schöner machen (Log + Error Tabellen scrollbar)
   - Status farblich hinterlegen
   - start/end kleiner
 - BK wäre gut, bei Assetverzeichnis und als Workflowinstance_id wenn möglich_

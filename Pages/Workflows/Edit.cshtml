@@ -5,7 +5,10 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Workflow Instance</h1>
+<h1>
+    <a class="btn btn-secondary" asp-page="./Index">back</a>
+    Workflow Instance
+</h1>
 
 <div>
     <hr />
@@ -44,7 +47,7 @@
             @Html.DisplayNameFor(model => model.Workflow.Status)
         </dt>
         <dd class="col-sm-9">
-            <span id="wf_status"></span>
+            @await Html.PartialAsync("_WorkflowStatusPartial", Model.Workflow.Status)
         </dd>
     </dl>
 </div>
@@ -101,11 +104,7 @@
     <div>
         <button style="visibility: hidden;" id="resume_btn" class="btn btn-info" onclick="resume_workflow();">Resume</button>
     </div>
-    <div>
-        <a asp-page="./Index">Back to List</a>
-    </div>
 
-    <!-- damit ui die workflow id kennt -->
     <input id="workflow_id" type="hidden" value="@Model.Workflow.InstanceId" /> 
 
     <script src="~/js/signalr/dist/browser/signalr.js"></script>

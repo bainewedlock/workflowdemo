@@ -16,45 +16,35 @@
 
 <table class="table table-hover">
     <tr>
-        <th>
+        <th class="col-sm-2">
             @Html.DisplayNameFor(model => model.Workflow[0].WorkflowDefinitionId)
         </th>
-        <th>
+        <th class="col-sm-2">
             @Html.DisplayNameFor(model => model.Workflow[0].Status)
         </th>
-        <th>
-            Instance
+        <th class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Workflow[0].InstanceId)
         </th>
-        <th>
+        <th class="col-sm-2">
             @Html.DisplayNameFor(model => model.Workflow[0].CreateTime)
         </th>
-        <th>
+        <th class="col-sm-2">
             @Html.DisplayNameFor(model => model.Workflow[0].CompleteTime)
         </th>
     </tr>
     @foreach (var item in Model.Workflow) {
-        <tr>
+        <tr class="row-link" onclick="window.location='./Workflows/Edit?id=@item.InstanceId';">
             <td>
                 @Html.DisplayFor(modelItem => item.WorkflowDefinitionId)
             </td>
             <td>
-                @switch (item.Status)
-                {
-                    case 1:
-                        <span>Suspended</span>
-                        break;
-                    case 2:
-                        <span>Complete</span>
-                        break;
-                    default:
-                        <span>Pending</span>
-                        break;
-                }
+                @await Html.PartialAsync("_WorkflowStatusPartial", item.Status)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.InstanceId">
-                    open
-                </a>
+                <small class="text-muted">
+                @Html.DisplayFor(modelItem => item.InstanceId)
+                </small>
+
             </td>
              <td>
                 @Html.DisplayFor(modelItem => item.CreateTime)
