@@ -91,6 +91,7 @@ public class WalzWorkflowHub : Hub
         var a = assets(workflow_id);
         await a.LogAsync(LogCategory.Workflow, $"user resume");
         // TODO: identify user
+        // var user = Context.User.Identity;
         await wf.ResumeWorkflow(workflow_id);
     }
 
@@ -99,6 +100,7 @@ public class WalzWorkflowHub : Hub
         var a = assets(workflow_id);
         await a.LogAsync(LogCategory.Workflow, $"user resume");
         // TODO: identify user
+        // var user = Context.User.Identity;
         await wf.TerminateWorkflow(workflow_id);
     }
 }
