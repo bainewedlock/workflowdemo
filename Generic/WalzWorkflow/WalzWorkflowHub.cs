@@ -55,7 +55,7 @@ public class WalzWorkflowHub : Hub
         m.data.Add("log", log);
         ///////////////////////////////////////////////////////////////////////
 
-        await clients.PublishAsync(m);
+        await Clients.Caller.SendAsync(m.key, m.data);
     }
 
     public static async Task<WalzWorkflowMessage> GetWorkflowState(
