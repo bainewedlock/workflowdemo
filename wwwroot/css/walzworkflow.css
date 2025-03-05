@@ -1,0 +1,11 @@
+﻿.wwf-timestamp { font-size: 0.8em; }
+.wwf-row-link { cursor: pointer }
+.wwf-definition { font-variant: small-caps; }
+.wwf-instance {
+    font-family: monospace;
+    font-size: 0.8em;
+    color: darkolivegreen;
+}
+.wwf-status-container { display: grid; }
+.wwf-status { visibility: hidden; grid-row: 1; grid-column: 1; }
+.wwf-resume { visibility: hidden; grid-row: 2; width: 120px; }

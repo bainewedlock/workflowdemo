@@ -5,13 +5,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>
+<h1>Workflows</h1>
+<p>
     <form method="post" asp-page-handler="Cleanup" class="d-flex-row">
-        <span>Workflows</span>
         <a class="btn btn-primary" href="demo">Start Demo Workflow</a>
         <button type="submit" class="btn btn-danger">Remove all finished</button>
     </form>
-</h1>
+</p>
 
 <table class="table table-hover table-striped">
     <tr>
@@ -28,20 +28,25 @@
             @Html.DisplayNameFor(model => model.Workflow[0].CompleteTime)
         </th>
     </tr>
-    @foreach (var item in Model.Workflow) {
-        <tr class="row-link" onclick="window.location='./Workflows/Edit?id=@item.InstanceId';">
+    @foreach (var item in Model.Workflow)
+    {
+        <tr class="wwf-row-link" onclick="window.location='./Workflows/Edit?id=@item.InstanceId';">
             <td>
                 @await Html.PartialAsync("_WorkflowStatusPartial", item.Status)
             </td>
             <td>
-                @Html.DisplayFor(m => item.WorkflowDefinitionId)
-                @Html.DisplayFor(m => item.InstanceId)
-            </td>
-             <td>
-                @Html.DisplayFor(modelItem => item.CreateTime)
+                <span class="wwf-definition">@Html.DisplayFor(m => item.WorkflowDefinitionId)</span>
+                <span class="wwf-instance">@Html.DisplayFor(m => item.InstanceId)</span>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CompleteTime)
+                <span class="wwf-timestamp">
+                    @Html.DisplayFor(modelItem => item.CreateTime)
+                </span>
+            </td>
+            <td>
+                <span class="wwf-timestamp">
+                    @Html.DisplayFor(modelItem => item.CompleteTime)
+                </span>
             </td>
         </tr>
     }

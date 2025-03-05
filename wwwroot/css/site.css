@@ -21,9 +21,7 @@ body {
   margin-bottom: 60px;
 }
 
-
-.row-link {
- cursor: pointer
-
-
+h1 {
+   font-variant: small-caps;
 }
+

@@ -5,47 +5,52 @@
     ViewData["Title"] = "Edit";
 }
 
+
+<p>
+    <a class="btn btn-secondary d-inline" asp-page="./Index">back</a>
+</p>
 <h1>
-    <a class="btn btn-secondary" asp-page="./Index">back</a>
     Workflow Instance
 </h1>
-
-<style>
-    .wf-status-container { display: grid; }
-    .wf-status { visibility: hidden; grid-row: 1; grid-column: 1; }
-    .wf-resume { visibility: hidden; grid-row: 2; width: 120px; }
-</style>
 
 <p>
     <div class="card">
         <div class="card-header text-muted">
-            @Html.DisplayFor(model => model.Workflow.WorkflowDefinitionId)
-            @Html.DisplayFor(model => model.Workflow.InstanceId)
+            <span class="wwf-definition">
+                @Html.DisplayFor(model => model.Workflow.WorkflowDefinitionId)
+            </span>
+            <span class="wwf-instance">
+                @Html.DisplayFor(model => model.Workflow.InstanceId)
+            </span>
         </div>
         <dl class="row card-body">
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Workflow.CreateTime)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Workflow.CreateTime)
+                <span class="wwf-timestamp">
+                    @Html.DisplayFor(model => model.Workflow.CreateTime)
+                </span>
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Workflow.CompleteTime)
             </dt>
             <dd class="col-sm-10">
-                <span id="wf_complete_time">&nbsp;</span>
+                <span class="wwf-timestamp">
+                    <span id="wf_complete_time">&nbsp;</span>
+                </span>
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Workflow.Status)
             </dt>
-            <dd class="col-sm-10 wf-status-container">
-                <span id="wf_status0" class="wf-status">
+            <dd class="col-sm-10 wwf-status-container">
+                <span id="wf_status0" class="wwf-status">
                     @await Html.PartialAsync("_WorkflowStatusPartial", 0)</span>
-                <span id="wf_status1" class="wf-status">
+                <span id="wf_status1" class="wwf-status">
                     @await Html.PartialAsync("_WorkflowStatusPartial", 1)</span>
-                <span id="wf_status2" class="wf-status">
+                <span id="wf_status2" class="wwf-status">
                     @await Html.PartialAsync("_WorkflowStatusPartial", 2)</span>
-                <button id="resume_btn" class="btn btn-info wf-resume"
+                <button id="resume_btn" class="btn btn-info wwf-resume"
                 onclick="resume_workflow();">Resume</button>
             </dd>
         </dl>
