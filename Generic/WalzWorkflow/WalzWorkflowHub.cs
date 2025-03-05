@@ -98,7 +98,7 @@ public class WalzWorkflowHub : Hub
     public async Task Terminate(string workflow_id)
     {
         var a = assets(workflow_id);
-        await a.LogAsync(LogCategory.Workflow, $"user resume");
+        await a.LogAsync(LogCategory.Workflow, $"user terminate");
         // TODO: identify user
         // var user = Context.User.Identity;
         await wf.TerminateWorkflow(workflow_id);
