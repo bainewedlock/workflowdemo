@@ -1,8 +1,9 @@
 ﻿@page
+@using WorkerDemo.Generic.WalzWorkflow
 @model WorkerDemo.Pages.Workflows.EditModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = @Model.Workflow.InstanceTitle;
 }
 
 <p>
@@ -16,8 +17,9 @@
     <div class="card">
         <div class="card-header text-muted">
             <span class="wwf-definition">
-                @Html.DisplayFor(model => model.Workflow.WorkflowDefinitionId)
+                @Html.DisplayFor(model => model.Workflow.InstanceTitle)
             </span>
+            <br/>
             <span class="wwf-instance">
                 @Html.DisplayFor(model => model.Workflow.InstanceId)
             </span>
@@ -137,7 +139,6 @@ function add_log(entry) {
 }
 
 connection.on("WorkflowState", function (data) {
-console.log(data)
     var visible_1 = data.can_resume ? "visible" : "hidden";
     $("resume_btn").style.visibility = visible_1;
     $("terminate_btn").style.visibility = visible_1;
