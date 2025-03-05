@@ -10,56 +10,61 @@
    Workflow Instance
 </h1>
 
+<style>
+.wf-status-container { display: grid; }
+.wf-status { visibility: hidden; grid-row: 1; grid-column: 1; }
+.wf-resume { visibility: hidden; grid-row: 2; width: 120px; }
+</style>
+
+<p>
 <div class="card">
     <div class="card-header text-muted">
         @Html.DisplayFor(model => model.Workflow.WorkflowDefinitionId)
         @Html.DisplayFor(model => model.Workflow.InstanceId)
     </div>
     <dl class="row card-body">
-        <dt class="col-sm-1">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Workflow.CreateTime)
         </dt>
-        <dd class="col-sm-11">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Workflow.CreateTime)
         </dd>
-        <dt class="col-sm-1">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Workflow.CompleteTime)
         </dt>
-        <dd class="col-sm-11">
+        <dd class="col-sm-10">
             <span id="wf_complete_time">&nbsp;</span>
         </dd>
-        <dt class="col-sm-1">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Workflow.Status)
         </dt>
-        <dd class="col-sm-11">
-            @await Html.PartialAsync("_WorkflowStatusPartial", Model.Workflow.Status)
+        <dd class="col-sm-10 wf-status-container">
+            <span id="wf_status0" class="wf-status">
+                @await Html.PartialAsync("_WorkflowStatusPartial", 0)</span>
+            <span id="wf_status1" class="wf-status">
+                @await Html.PartialAsync("_WorkflowStatusPartial", 1)</span>
+            <span id="wf_status2" class="wf-status">
+                @await Html.PartialAsync("_WorkflowStatusPartial", 2)</span>
+            <button id="resume_btn" class="btn btn-info wf-resume"
+                onclick="resume_workflow();">Resume</button>
         </dd>
     </dl>
 </div>
+</p>
 
 <div class="container">
-@if (Model.Errors.Any())
+@if (Model.LogEntries.Any())
 {
-    <h2>Errors</h2>
+    <h2>Log</h2>
     <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Errors[0].ErrorTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Errors[0].Message)
-                </th>
-            </tr>
-        </thead>
         <tbody>
-            @foreach (var item in Model.Errors)
+            @foreach (var item in Model.LogEntries)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ErrorTime)
+                    <td class="col-sm-3">
+                        @Html.DisplayFor(modelItem => item.Time)
                     </td>
-                    <td>
+                    <td class="col-sm-9">
                         @Html.DisplayFor(modelItem => item.Message)
                     </td>
                 </tr>
@@ -74,9 +79,9 @@
         <caption>Log</caption>
         <thead>
             <tr>
-                <td scope="col" class="col-2">Date</td>
+                <td scope="col" class="col-3">Date</td>
                 <td scope="col" class="col-2">Context</td>
-                <td scope="col" class="col-8">Message</td>
+                <td scope="col" class="col-7">Message</td>
             </tr>
         </thead>
         <tbody>
@@ -87,9 +92,6 @@
     </table>
 </div>
 
-<div>
-    <button style="visibility: hidden;" id="resume_btn" class="btn btn-info" onclick="resume_workflow();">Resume</button>
-</div>
 
 <input id="workflow_id" type="hidden" value="@Model.Workflow.InstanceId" /> 
 
@@ -122,19 +124,27 @@ function resume_workflow() {
     });
 }
 
+function show(id, toggle) {
+    document.getElementById(id).style.visibility =
+        toggle ? "visible" : "collapse";
+}
+
+var $ = function( id ) { return document.getElementById( id ); };
+
 connection.on("WorkflowState", function (data) {
     console.log("workflowstate", data);
     var visible_1 = data.can_resume ? "visible" : "hidden";
-    document.getElementById("resume_btn").style.visibility = visible_1;
-    document.getElementById("wf_status").innerHTML = data.status;
-    document.getElementById("wf_complete_time").innerHTML = data.complete_time;
+    $("resume_btn").style.visibility = visible_1;
+    $("wf_complete_time").innerHTML = data.complete_time;
+    show("wf_status0", data.status == 0);
+    show("wf_status1", data.status == 1);
+    show("wf_status2", data.status == 2);
 });
 
 connection.on("Log", function (data) {
-    if(document.getElementById("empty_log"))
-        document.getElementById("empty_log").remove();
-    var t = document.getElementById("log");
-    var row = t.insertRow(1);
+    if ($("empty_log"))
+        $("empty_log").remove();
+    var row = $("log").insertRow(1);
     row.insertCell(0).innerHTML = data.timestamp;
     row.insertCell(1).innerHTML = data.context;
     row.insertCell(2).innerHTML = data.message;

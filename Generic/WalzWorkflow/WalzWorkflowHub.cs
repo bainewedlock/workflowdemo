@@ -53,7 +53,7 @@ public class WalzWorkflowHub : Hub
 
         var data = new Dictionary<string, object>
         {
-            ["status"] = status.ToString(),
+            ["status"] = (int)status,
             ["complete_time"] = complete_time != null ?
                                 complete_time.ToString()! : "-",
             ["can_resume"] = status == WorkflowStatus.Suspended

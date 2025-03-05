@@ -1,4 +1,5 @@
-﻿using WorkflowCore.Models;
+﻿using System.Text.RegularExpressions;
+using WorkflowCore.Models;
 
 namespace WorkerDemo.Generic.WalzWorkflow;
 
@@ -50,12 +51,13 @@ public class Assets
     /// <returns></returns>
     public Task LogAsync(LogCategory category, string message)
     {
+        message = Regex.Replace(message, @"\r\n|\r|\n", "|");
         return LogAsync(category.ToString(), message);
     }
 
     async Task LogAsync(string context, string message)
     {
-        var timestamp = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
+        var timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
 
         var m = new WalzWorkflowMessage(
                     workflow_id: wf_instance_id,
@@ -93,6 +95,17 @@ public class Assets
     {
         var path = Path.Combine(InitDir(), filename);
         return await File.ReadAllTextAsync(path);
+    }
+
+    /// <summary>
+    /// Read content of existing utf-8 asset file
+    /// </summary>
+    /// <param name="filename">Filename without path</param>
+    /// <returns>File content as string</returns>
+    public async Task<string[]> ReadStringLinesAsync(string filename)
+    {
+        var path = Path.Combine(InitDir(), filename);
+        return await File.ReadAllLinesAsync(path);
     }
 
     /// <summary>

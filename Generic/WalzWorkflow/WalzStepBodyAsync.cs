@@ -17,7 +17,16 @@ public abstract class WalzStepBodyAsync : StepBodyAsync
         Assets = AssetsFactory(stepctx.Workflow.Id);
         Step = stepctx.Step;
 
-        await RunAsync();
+        try
+        {
+            await RunAsync();
+        }
+        catch (Exception ex)
+        {
+            await Assets.LogAsync(LogCategory.Workflow,
+                ex!.ToString() + $"\r\n{ex!.StackTrace}".TrimEnd());
+            throw;
+        }
 
         var m = $"End of step '{stepctx.Step.Name}'.";
         await Assets.LogAsync(LogCategory.Workflow, m);

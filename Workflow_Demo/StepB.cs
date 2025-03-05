@@ -7,6 +7,9 @@ public class StepB : WalzStepBodyAsync
     public override async Task RunAsync()
     {
         var text = (await Assets.ReadStringAsync("dummy.txt")).Trim();
+
+        //await LogAsync("Thats it.");
+
         if (text == "HELLO")
         {
             await LogAsync($"got correct text from asset: {text}");
