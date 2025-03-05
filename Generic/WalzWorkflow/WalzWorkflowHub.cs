@@ -93,4 +93,12 @@ public class WalzWorkflowHub : Hub
         // TODO: identify user
         await wf.ResumeWorkflow(workflow_id);
     }
+
+    public async Task Terminate(string workflow_id)
+    {
+        var a = assets(workflow_id);
+        await a.LogAsync(LogCategory.Workflow, $"user resume");
+        // TODO: identify user
+        await wf.TerminateWorkflow(workflow_id);
+    }
 }

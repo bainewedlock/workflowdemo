@@ -5,7 +5,6 @@
     ViewData["Title"] = "Edit";
 }
 
-
 <p>
     <a class="btn btn-secondary d-inline" asp-page="./Index">back</a>
 </p>
@@ -51,8 +50,13 @@
                         @await Html.PartialAsync("_WorkflowStatusPartial", @i)</span>
 
                 }
-                <button id="resume_btn" class="btn btn-info wwf-resume"
-                onclick="resume_workflow();">Resume</button>
+                <p/>
+                <div class="col-sm-12">
+                    <button id="resume_btn" class="btn btn-info col-sm-2"
+                        onclick="resume_workflow();">Resume</button>
+                    <button id="terminate_btn" class="btn btn-dark col-sm-2"
+                        onclick="terminate_workflow();">Terminate</button>
+                </div>
             </dd>
         </dl>
     </div>
@@ -97,19 +101,31 @@ connection.start().then(function () {
     return console.error(err.toString());
 });
 
+var $ = function( id ) { return document.getElementById( id ); };
+
 function resume_workflow() {
-    document.getElementById("resume_btn").style.visibility = "hidden";
+    $("resume_btn").style.visibility = "hidden";
+    $("terminate_btn").style.visibility = "hidden";
     connection.invoke("Resume", get_workflow_id()).catch(function (err) {
         return console.error(err.toString());
     });
 }
 
+function terminate_workflow() {
+    if (!confirm("Really terminate the workflow?")) return;
+
+    $("resume_btn").style.visibility = "hidden";
+    $("terminate_btn").style.visibility = "hidden";
+    connection.invoke("Terminate", get_workflow_id()).catch(function (err) {
+        return console.error(err.toString());
+    });
+}
+
 function show(id, toggle) {
-    document.getElementById(id).style.visibility =
+    $(id).style.visibility =
         toggle ? "visible" : "collapse";
 }
 
-var $ = function( id ) { return document.getElementById( id ); };
 
 function add_log(entry) {
     if ($("empty_log"))
@@ -124,6 +140,7 @@ connection.on("WorkflowState", function (data) {
 console.log(data)
     var visible_1 = data.can_resume ? "visible" : "hidden";
     $("resume_btn").style.visibility = visible_1;
+    $("terminate_btn").style.visibility = visible_1;
     $("wf_complete_time").innerHTML = data.complete_time;
     for (var i=0; i<4; i++)
         show(`wf_status${i}`, data.status == i);
