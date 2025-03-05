@@ -33,16 +33,18 @@ namespace WorkerDemo.Pages.Workflows
             {
                 var tokens = l.Split();
                 var left = string.Join(" ", tokens.Take(2));
-                var right = string.Join(" ", tokens.Skip(2));
+                var ctx = tokens[2].Replace("[", "").Replace("]", "");
+                var right = string.Join(" ", tokens.Skip(3));
 
                 LogEntries.Add(new LogEntry
                 {
                     Time = left,
+                    Context = ctx,
                     Message = right
                 });
             }
 
-            LogEntries.Sort((a, b) => a.CompareTo(b));
+            LogEntries.Sort((a, b) => b.CompareTo(a));
             return Page();
         }
     }

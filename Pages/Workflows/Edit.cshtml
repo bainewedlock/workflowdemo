@@ -7,91 +7,82 @@
 
 <h1>
     <a class="btn btn-secondary" asp-page="./Index">back</a>
-   Workflow Instance
+    Workflow Instance
 </h1>
 
 <style>
-.wf-status-container { display: grid; }
-.wf-status { visibility: hidden; grid-row: 1; grid-column: 1; }
-.wf-resume { visibility: hidden; grid-row: 2; width: 120px; }
+    .wf-status-container { display: grid; }
+    .wf-status { visibility: hidden; grid-row: 1; grid-column: 1; }
+    .wf-resume { visibility: hidden; grid-row: 2; width: 120px; }
 </style>
 
 <p>
-<div class="card">
-    <div class="card-header text-muted">
-        @Html.DisplayFor(model => model.Workflow.WorkflowDefinitionId)
-        @Html.DisplayFor(model => model.Workflow.InstanceId)
-    </div>
-    <dl class="row card-body">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Workflow.CreateTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Workflow.CreateTime)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Workflow.CompleteTime)
-        </dt>
-        <dd class="col-sm-10">
-            <span id="wf_complete_time">&nbsp;</span>
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Workflow.Status)
-        </dt>
-        <dd class="col-sm-10 wf-status-container">
-            <span id="wf_status0" class="wf-status">
-                @await Html.PartialAsync("_WorkflowStatusPartial", 0)</span>
-            <span id="wf_status1" class="wf-status">
-                @await Html.PartialAsync("_WorkflowStatusPartial", 1)</span>
-            <span id="wf_status2" class="wf-status">
-                @await Html.PartialAsync("_WorkflowStatusPartial", 2)</span>
-            <button id="resume_btn" class="btn btn-info wf-resume"
+    <div class="card">
+        <div class="card-header text-muted">
+            @Html.DisplayFor(model => model.Workflow.WorkflowDefinitionId)
+            @Html.DisplayFor(model => model.Workflow.InstanceId)
+        </div>
+        <dl class="row card-body">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Workflow.CreateTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Workflow.CreateTime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Workflow.CompleteTime)
+            </dt>
+            <dd class="col-sm-10">
+                <span id="wf_complete_time">&nbsp;</span>
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Workflow.Status)
+            </dt>
+            <dd class="col-sm-10 wf-status-container">
+                <span id="wf_status0" class="wf-status">
+                    @await Html.PartialAsync("_WorkflowStatusPartial", 0)</span>
+                <span id="wf_status1" class="wf-status">
+                    @await Html.PartialAsync("_WorkflowStatusPartial", 1)</span>
+                <span id="wf_status2" class="wf-status">
+                    @await Html.PartialAsync("_WorkflowStatusPartial", 2)</span>
+                <button id="resume_btn" class="btn btn-info wf-resume"
                 onclick="resume_workflow();">Resume</button>
-        </dd>
-    </dl>
-</div>
+            </dd>
+        </dl>
+    </div>
 </p>
 
-<div class="container">
-@if (Model.LogEntries.Any())
-{
-    <h2>Log</h2>
-    <table class="table">
-        <tbody>
-            @foreach (var item in Model.LogEntries)
-            {
-                <tr>
-                    <td class="col-sm-3">
-                        @Html.DisplayFor(modelItem => item.Time)
-                    </td>
-                    <td class="col-sm-9">
-                        @Html.DisplayFor(modelItem => item.Message)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-</div>
-
-<div class="container bg-info-subtle">
-    <table id="log" class="table caption-top table-sm">
-        <caption>Log</caption>
-        <thead>
-            <tr>
-                <td scope="col" class="col-3">Date</td>
-                <td scope="col" class="col-2">Context</td>
-                <td scope="col" class="col-7">Message</td>
-            </tr>
-        </thead>
-        <tbody>
+<table id="log" class="table">
+    <thead>
+        <tr>
+            <td scope="col" class="col-3">Date</td>
+            <td scope="col" class="col-2">Context</td>
+            <td scope="col" class="col-7">Message</td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.LogEntries.Any())
+        {
             <tr>
                 <td id="empty_log" colspan="4">(empty)</td>
             </tr>
-        </tbody>
-    </table>
-</div>
-
+        }
+        @foreach (var item in Model.LogEntries)
+        {
+            <tr>
+                <td class="col-sm-3">
+                    @Html.DisplayFor(modelItem => item.Time)
+                </td>
+                <td class="col-sm-2">
+                    @Html.DisplayFor(modelItem => item.Context)
+                </td>
+                <td class="col-sm-7">
+                    @Html.DisplayFor(modelItem => item.Message)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 <input id="workflow_id" type="hidden" value="@Model.Workflow.InstanceId" /> 
 
