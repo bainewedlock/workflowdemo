@@ -44,12 +44,13 @@
                 @Html.DisplayNameFor(model => model.Workflow.Status)
             </dt>
             <dd class="col-sm-10 wwf-status-container">
-                <span id="wf_status0" class="wwf-status">
-                    @await Html.PartialAsync("_WorkflowStatusPartial", 0)</span>
-                <span id="wf_status1" class="wwf-status">
-                    @await Html.PartialAsync("_WorkflowStatusPartial", 1)</span>
-                <span id="wf_status2" class="wwf-status">
-                    @await Html.PartialAsync("_WorkflowStatusPartial", 2)</span>
+                @for (int i=0; i<4; i++) 
+                {
+                    var id = $"wf_status{i}";
+                    <span id="@id" class="wwf-status">
+                        @await Html.PartialAsync("_WorkflowStatusPartial", @i)</span>
+
+                }
                 <button id="resume_btn" class="btn btn-info wwf-resume"
                 onclick="resume_workflow();">Resume</button>
             </dd>
@@ -124,9 +125,8 @@ console.log(data)
     var visible_1 = data.can_resume ? "visible" : "hidden";
     $("resume_btn").style.visibility = visible_1;
     $("wf_complete_time").innerHTML = data.complete_time;
-    show("wf_status0", data.status == 0);
-    show("wf_status1", data.status == 1);
-    show("wf_status2", data.status == 2);
+    for (var i=0; i<4; i++)
+        show(`wf_status${i}`, data.status == i);
     if (data.log) data.log.forEach(add_log);
 });
 
