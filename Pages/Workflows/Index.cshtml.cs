@@ -24,7 +24,7 @@ namespace WorkerDemo.Pages.Workflows
         public async Task<IActionResult> OnPostCleanup(string instanceId)
         {
             await db.Workflows
-                .Where(x => x.Status == 2)
+                .Where(x => x.Status == 2 || x.Status == 3) // complete/terminated
                 .ExecuteDeleteAsync();
             return RedirectToPage();
         }
