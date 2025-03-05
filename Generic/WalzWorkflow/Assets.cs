@@ -57,17 +57,21 @@ public class Assets
 
     async Task LogAsync(string context, string message)
     {
-        var timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
+        var timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
+
+        var log = new LogEntry(
+                        time: timestamp,
+                        message: message,
+                        context: context);
 
         var m = new WalzWorkflowMessage(
                     workflow_id: wf_instance_id,
                     key: "Log",
                     data: new Dictionary<string, object>
-                {
-            { "timestamp", timestamp },
-            { "context", context },
-            { "message", message }
-                });
+                    {
+                        { "add_log" , log }
+                    }
+                );
 
         await AppendLogAsync($"{timestamp} [{context}] {message}");
         await client_manager.PublishAsync(m);

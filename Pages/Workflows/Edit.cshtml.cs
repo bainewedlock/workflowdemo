@@ -9,14 +9,11 @@ namespace WorkerDemo.Pages.Workflows
     public class EditModel : PageModel
     {
         public Workflow Workflow { get; set; } = default!;
-        public List<LogEntry> LogEntries { get; set; } = [];
         readonly WorkflowContext db;
-        readonly Assets.Factory assets;
 
-        public EditModel(WorkflowContext db, Assets.Factory assets)
+        public EditModel(WorkflowContext db)
         {
             this.db = db;
-            this.assets = assets;
         }
 
         public async Task<IActionResult> OnGetAsync(string id)
@@ -27,24 +24,6 @@ namespace WorkerDemo.Pages.Workflows
             Workflow = await db.Workflows.SingleAsync(
                 m => m.InstanceId == new Guid(id));
 
-            var a = assets(id);
-
-            foreach (var l in await a.ReadStringLinesAsync("logfile.txt"))
-            {
-                var tokens = l.Split();
-                var left = string.Join(" ", tokens.Take(2));
-                var ctx = tokens[2].Replace("[", "").Replace("]", "");
-                var right = string.Join(" ", tokens.Skip(3));
-
-                LogEntries.Add(new LogEntry
-                {
-                    Time = left,
-                    Context = ctx,
-                    Message = right
-                });
-            }
-
-            LogEntries.Sort((a, b) => b.CompareTo(a));
             return Page();
         }
     }

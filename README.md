@@ -1,8 +1,8 @@
 
 ## TODO
 - Logs
-  - die ExecutionErrors nicht mehr anzeigen (string date ist eh weird)
-  - stattdessen im WalzStepBodyAsync auch die exceptions loggen
+  - beim ersten aufruf sollten die logs im WorkflowState mitkommen
+  - danach nicht mehr (weil sie ja eh live geadded werden)
 - suspended sollte man auch abbrechen / parken? können
 - Log Tail auf der Workflow Page
 	- evtl machts auch sinn die logs und die

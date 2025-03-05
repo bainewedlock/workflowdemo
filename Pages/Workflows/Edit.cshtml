@@ -61,26 +61,9 @@
         </tr>
     </thead>
     <tbody>
-        @if (!Model.LogEntries.Any())
-        {
-            <tr>
-                <td id="empty_log" colspan="4">(empty)</td>
-            </tr>
-        }
-        @foreach (var item in Model.LogEntries)
-        {
-            <tr>
-                <td class="col-sm-3">
-                    @Html.DisplayFor(modelItem => item.Time)
-                </td>
-                <td class="col-sm-2">
-                    @Html.DisplayFor(modelItem => item.Context)
-                </td>
-                <td class="col-sm-7">
-                    @Html.DisplayFor(modelItem => item.Message)
-                </td>
-            </tr>
-        }
+        <tr>
+            <td id="empty_log" colspan="4">(no logs)</td>
+        </tr>
     </tbody>
 </table>
 
@@ -122,22 +105,28 @@ function show(id, toggle) {
 
 var $ = function( id ) { return document.getElementById( id ); };
 
+function add_log(entry) {
+    if ($("empty_log"))
+        $("empty_log").remove();
+    var row = $("log").insertRow(1);
+    row.insertCell(0).innerHTML = entry.time;
+    row.insertCell(1).innerHTML = entry.context;
+    row.insertCell(2).innerHTML = entry.message;
+}
+
 connection.on("WorkflowState", function (data) {
-    console.log("workflowstate", data);
+console.log(data)
     var visible_1 = data.can_resume ? "visible" : "hidden";
     $("resume_btn").style.visibility = visible_1;
     $("wf_complete_time").innerHTML = data.complete_time;
     show("wf_status0", data.status == 0);
     show("wf_status1", data.status == 1);
     show("wf_status2", data.status == 2);
+    if (data.log) data.log.forEach(add_log);
 });
 
 connection.on("Log", function (data) {
-    if ($("empty_log"))
-        $("empty_log").remove();
-    var row = $("log").insertRow(1);
-    row.insertCell(0).innerHTML = data.timestamp;
-    row.insertCell(1).innerHTML = data.context;
-    row.insertCell(2).innerHTML = data.message;
+    add_log(data.add_log);
 });
+
 </script>
