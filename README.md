@@ -1,8 +1,5 @@
 
 ## TODO
-- Bug mit Logs
-  - wenn 2 tabs mit dem gleichen WF offen sind und man refresht einen, dann 
-    werden beim anderen auch nochmal alle logs angehängt ...
 - suspended sollte man auch abbrechen / parken? können
 - Workflow Page schöner machen (Log + Error Tabellen scrollbar)
   - Status farblich hinterlegen
