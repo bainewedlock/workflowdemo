@@ -133,9 +133,13 @@ function add_log(entry) {
     if ($("empty_log"))
         $("empty_log").remove();
     var row = $("log").insertRow(1);
-    row.insertCell(0).innerHTML = entry.time;
+    const a = row.insertCell(0)
+    a.innerHTML = entry.time;
+    a.classList.add("wwf-timestamp");
     row.insertCell(1).innerHTML = entry.context;
-    row.insertCell(2).innerHTML = entry.message;
+    const c = row.insertCell(2);
+    c.innerHTML = entry.message.replaceAll("|", "<br/>");
+    c.classList.add("wwf-log");
 }
 
 connection.on("WorkflowState", function (data) {

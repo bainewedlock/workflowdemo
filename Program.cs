@@ -70,7 +70,8 @@ if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
 app.MapGet("/demo", async ctx =>
 {
-    var rnd = new Random().Next(10000000, 90000000);
+    //var rnd = new Random().Next(10000000, 90000000);
+    var rnd = 12345;
     await wf.StartWorkflow("Demo", null, $"61.{rnd}.1.2");
     ctx.Response.Redirect("/Workflows");
 });

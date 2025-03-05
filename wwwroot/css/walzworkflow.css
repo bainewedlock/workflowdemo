@@ -9,3 +9,4 @@
 .wwf-status-container { display: grid; }
 .wwf-status { visibility: hidden; grid-row: 1; grid-column: 1; }
 .wwf-resume { visibility: hidden; grid-row: 2; width: 120px; }
+.wwf-log { font-size: 0.8em; }
