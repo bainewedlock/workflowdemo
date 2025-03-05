@@ -1,14 +1,9 @@
 
 ## TODO
-- Logs
-  - beim ersten aufruf sollten die logs im WorkflowState mitkommen
-  - danach nicht mehr (weil sie ja eh live geadded werden)
+- Bug mit Logs
+  - wenn 2 tabs mit dem gleichen WF offen sind und man refresht einen, dann 
+    werden beim anderen auch nochmal alle logs angehängt ...
 - suspended sollte man auch abbrechen / parken? können
-- Log Tail auf der Workflow Page
-	- evtl machts auch sinn die logs und die
-	  errors
-	  und dann beides in einer liste auszugeben.
-	- dann scrollt man einfach über die page
 - Workflow Page schöner machen (Log + Error Tabellen scrollbar)
   - Status farblich hinterlegen
   - start/end kleiner
