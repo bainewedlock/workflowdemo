@@ -5,16 +5,16 @@ namespace WorkerDemo.Generic.WalzWorkflow;
 
 public class Assets
 {
-    public delegate Assets Factory(string workflow_instance_id);
+    public delegate Assets Factory(WorkflowInstance wf);
     readonly WalzWorkflowConfig config;
-    readonly string wf_instance_id;
+    readonly WorkflowInstance wf;
     readonly ClientManager client_manager;
 
-    public Assets(WalzWorkflowConfig config, string workflow_instance_id,
+    public Assets(WalzWorkflowConfig config, WorkflowInstance wf,
         ClientManager client_manager)
     {
         this.config = config;
-        wf_instance_id = workflow_instance_id;
+        this.wf = wf;
         this.client_manager = client_manager;
     }
 
@@ -24,7 +24,8 @@ public class Assets
     /// <returns>path</returns>
     string InitDir()
     {
-        var path = Path.Combine(config.AssetsBaseDir, wf_instance_id);
+        var path = Path.Combine(
+            config.AssetsBaseDir, wf.WorkflowDefinitionId, wf.Reference);
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
@@ -65,7 +66,7 @@ public class Assets
                         context: context);
 
         var m = new WalzWorkflowMessage(
-                    workflow_id: wf_instance_id,
+                    workflow_id: wf.Id,
                     key: "Log",
                     data: new Dictionary<string, object>
                     {

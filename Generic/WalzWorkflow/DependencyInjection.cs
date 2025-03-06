@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace WorkerDemo.Generic.WalzWorkflow;
 
@@ -13,11 +12,11 @@ public static class DependencyInjection
             .ToArray();
 
 
-        services.AddTransient<Assets.Factory>(svc => wfid =>
+        services.AddTransient<Assets.Factory>(svc => wf =>
         {
             var wc = svc.GetService<WalzWorkflowConfig>()!;
             var cm = svc.GetService<ClientManager>()!;
-            return new Assets(wc, wfid, cm);
+            return new Assets(wc, wf, cm);
         });
 
         foreach (var t in step_types)

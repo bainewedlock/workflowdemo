@@ -14,7 +14,7 @@ public abstract class WalzStepBodyAsync : StepBodyAsync
     public sealed override async Task<ExecutionResult> RunAsync(
         IStepExecutionContext stepctx)
     {
-        Assets = AssetsFactory(stepctx.Workflow.Id);
+        Assets = AssetsFactory(stepctx.Workflow);
         Step = stepctx.Step;
 
         try

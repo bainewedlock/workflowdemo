@@ -41,8 +41,9 @@ public class WalzWorkflowHub : Hub
         ///////////////////////////////////////////////////////////////////////
         // add logs from textfile
         ///////////////////////////////////////////////////////////////////////
+        var wfi = await wf.PersistenceStore.GetWorkflowInstance(workflow_id);
         var log = new List<LogEntry>();
-        var a = assets(workflow_id);
+        var a = assets(wfi);
         foreach (var l in await a.ReadStringLinesAsync("logfile.txt"))
         {
             var tokens = l.Split();
@@ -88,7 +89,8 @@ public class WalzWorkflowHub : Hub
 
     public async Task Resume(string workflow_id)
     {
-        var a = assets(workflow_id);
+        var wfi = await wf.PersistenceStore.GetWorkflowInstance(workflow_id);
+        var a = assets(wfi);
         await a.LogAsync(LogCategory.Workflow, $"user resume");
         // TODO: identify user
         // var user = Context.User.Identity;
@@ -97,7 +99,8 @@ public class WalzWorkflowHub : Hub
 
     public async Task Terminate(string workflow_id)
     {
-        var a = assets(workflow_id);
+        var wfi = await wf.PersistenceStore.GetWorkflowInstance(workflow_id);
+        var a = assets(wfi);
         await a.LogAsync(LogCategory.Workflow, $"user terminate");
         // TODO: identify user
         // var user = Context.User.Identity;
