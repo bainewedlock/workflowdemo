@@ -16,26 +16,26 @@
 <table class="table table-hover table-striped">
     <tr>
         <th class="col-sm-1">
-            @Html.DisplayNameFor(model => model.Workflow[0].Status)
+            @Html.DisplayNameFor(model => model.Workflows[0].Status)
         </th>
         <th class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Workflow[0].WorkflowDefinitionId)
+            @Html.DisplayNameFor(model => model.Workflows[0].WorkflowDefinitionId)
         </th>
         <th class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Workflow[0].Reference)
+            @Html.DisplayNameFor(model => model.Workflows[0].Reference)
         </th>
         <th class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Workflow[0].CreateTime)
+            @Html.DisplayNameFor(model => model.Workflows[0].CreateTime)
         </th>
         <th class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Workflow[0].CompleteTime)
+            @Html.DisplayNameFor(model => model.Workflows[0].CompleteTime)
         </th>
     </tr>
-    @foreach (var item in Model.Workflow)
+    @foreach (var item in Model.Workflows)
     {
-        <tr class="wwf-row-link" onclick="window.location='./Workflows/Edit?id=@item.InstanceId';">
+        <tr class="wwf-row-link" onclick="window.location='./Workflows/Edit?id=@item.Id';">
             <td>
-                @await Html.PartialAsync("_WorkflowStatusPartial", item.Status)
+                @await Html.PartialAsync("_WorkflowStatusPartial", (int)item.Status)
             </td>
             <td>
                 <span class="wwf-definition">@Html.DisplayFor(m => item.WorkflowDefinitionId)</span>
