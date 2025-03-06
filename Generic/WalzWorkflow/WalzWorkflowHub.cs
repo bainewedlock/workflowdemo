@@ -44,7 +44,7 @@ public class WalzWorkflowHub : Hub
         var wfi = await wf.PersistenceStore.GetWorkflowInstance(workflow_id);
         var log = new List<LogEntry>();
         var a = assets(wfi);
-        foreach (var l in await a.ReadStringLinesAsync("logfile.txt"))
+        foreach (var l in await a.ReadLogfile())
         {
             var tokens = l.Split();
             var left = string.Join(" ", tokens.Take(2));

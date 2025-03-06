@@ -9,6 +9,7 @@ public class Assets
     readonly WalzWorkflowConfig config;
     readonly WorkflowInstance wf;
     readonly ClientManager client_manager;
+    const string OWNER_FILE = "owner_workflow.txt";
 
     public Assets(WalzWorkflowConfig config, WorkflowInstance wf,
         ClientManager client_manager)
@@ -24,14 +25,15 @@ public class Assets
     /// <returns>path</returns>
     string InitDir()
     {
-        var path = Path.Combine(
-            config.AssetsBaseDir, wf.WorkflowDefinitionId, wf.Reference);
+        var path = Path.Combine( config.AssetsBaseDir, SubDir);
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
         }
         return path;
     }
+
+    string SubDir => $"{wf.WorkflowDefinitionId}/{wf.Reference}";
 
     /// <summary>
     /// Write to current workflow log (from a workflow step)
@@ -92,6 +94,17 @@ public class Assets
     }
 
     /// <summary>
+    /// Check is asset file exists
+    /// </summary>
+    /// <param name="filename">Filename without path</param>
+    /// <returns>File content as string</returns>
+    public bool Exists(string filename)
+    {
+        var path = Path.Combine(InitDir(), filename);
+        return File.Exists(path);
+    }
+
+    /// <summary>
     /// Read content of existing utf-8 asset file
     /// </summary>
     /// <param name="filename">Filename without path</param>
@@ -102,14 +115,17 @@ public class Assets
         return await File.ReadAllTextAsync(path);
     }
 
+    string Logfile => $"{wf.Id}.log";
+
     /// <summary>
     /// Read content of existing utf-8 asset file
     /// </summary>
     /// <param name="filename">Filename without path</param>
     /// <returns>File content as string</returns>
-    public async Task<string[]> ReadStringLinesAsync(string filename)
+    public async Task<string[]> ReadLogfile()
     {
-        var path = Path.Combine(InitDir(), filename);
+        var path = Path.Combine(InitDir(), Logfile);
+        if (!File.Exists(path)) return [];
         return await File.ReadAllLinesAsync(path);
     }
 
@@ -142,7 +158,25 @@ public class Assets
     /// <returns></returns>
     Task AppendLogAsync(string line)
     {
-        var path = Path.Combine(InitDir(), "logfile.txt");
+        var path = Path.Combine(InitDir(), Logfile);
         return File.AppendAllLinesAsync(path, [line]);
+    }
+
+    public async Task CheckOwnerAsync()
+    {
+        var path = Path.Combine(InitDir(), OWNER_FILE);
+
+        if (File.Exists(path))
+        {
+            var owner = (await File.ReadAllTextAsync(path)).Trim();
+            if (owner != wf.Id)
+                throw new ApplicationException(
+                    $"Unerwarteter Zugriff auf Asset {SubDir} durch " +
+                    $"Workflow {wf.Id}");
+        }
+        else
+        {
+            await File.WriteAllTextAsync(path, wf.Id);
+        }
     }
 }

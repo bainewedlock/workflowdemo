@@ -18,7 +18,8 @@ public abstract class WalzStepBodyAsync : StepBodyAsync
         Step = stepctx.Step;
 
         try
-        {
+    {
+            await Assets.CheckOwnerAsync();
             await RunAsync();
         }
         catch (Exception ex)
