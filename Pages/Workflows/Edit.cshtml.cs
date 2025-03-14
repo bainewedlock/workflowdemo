@@ -1,28 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using WorkerDemo.Generic.WorkflowEF;
+using WorkflowCore.Interface;
+using WorkflowCore.Models;
 
 namespace WorkerDemo.Pages.Workflows
 {
     public class EditModel : PageModel
     {
-        public Workflow Workflow { get; set; } = default!;
-        readonly WorkflowContext db;
+        public WorkflowInstance? Workflow { get; set; }
+        public string Title = "";
+        readonly IWorkflowHost workflows;
 
-        public EditModel(WorkflowContext db)
+        public EditModel(IWorkflowHost workflows)
         {
-            this.db = db;
+            this.workflows = workflows;
         }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            if (id == null || await db.Workflows.FirstOrDefaultAsync(
-                m => m.InstanceId == new Guid(id)) == null) return NotFound();
-
-            Workflow = await db.Workflows.SingleAsync(
-                m => m.InstanceId == new Guid(id));
-
+            Workflow = await workflows.PersistenceStore.GetWorkflowInstance(id);
+            if (Workflow == null) return NotFound();
+            Title = $"{Workflow.WorkflowDefinitionId}/{Workflow.Reference}";
             return Page();
         }
     }

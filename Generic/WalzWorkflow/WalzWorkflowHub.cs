@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging.Signing;
-using WorkerDemo.Generic.WorkflowEF;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -12,15 +9,13 @@ public class WalzWorkflowHub : Hub
     readonly IWorkflowHost wf;
     readonly ClientManager clients;
     readonly Assets.Factory assets;
-    readonly WorkflowContext db;
 
     public WalzWorkflowHub(IWorkflowHost wf, ClientManager clients,
-        Assets.Factory assets, WorkflowContext db)
+        Assets.Factory assets)
     {
         this.wf = wf;
         this.clients = clients;
         this.assets = assets;
-        this.db = db;
     }
 
     public override Task OnDisconnectedAsync(Exception? exception)
@@ -36,12 +31,12 @@ public class WalzWorkflowHub : Hub
     {
         clients.Join(Clients.Caller, workflow_id);
 
-        var m = await GetWorkflowState(db, workflow_id);
+        var wfi = await wf.PersistenceStore.GetWorkflowInstance(workflow_id);
+        var m = GetWorkflowState(wfi);
 
         ///////////////////////////////////////////////////////////////////////
         // add logs from textfile
         ///////////////////////////////////////////////////////////////////////
-        var wfi = await wf.PersistenceStore.GetWorkflowInstance(workflow_id);
         var log = new List<LogEntry>();
         var a = assets(wfi);
         foreach (var l in await a.ReadLogfile())
@@ -59,29 +54,19 @@ public class WalzWorkflowHub : Hub
         await Clients.Caller.SendAsync(m.key, m.data);
     }
 
-    public static async Task<WalzWorkflowMessage> GetWorkflowState(
-        WorkflowContext db, string workflow_id,
-        WorkflowStatus? overrideStatus = null,
-        DateTime? overrideCompleteTime = null)
+    public static WalzWorkflowMessage GetWorkflowState(WorkflowInstance wfi)
     {
-        var wf = await db.Workflows.SingleAsync(
-            x => x.InstanceId == new Guid(workflow_id));
-
-        var status = overrideStatus ?? (WorkflowStatus)wf.Status;
-
-        var complete_time = overrideCompleteTime ?? wf.CompleteTime;
-
         var data = new Dictionary<string, object>
         {
-            ["status"] = (int)status,
-            ["complete_time"] = complete_time != null ?
-                                complete_time.ToString()! : "-",
-            ["can_resume"] = status == WorkflowStatus.Suspended
+            ["status"] = (int)wfi.Status,
+            ["complete_time"] = wfi.CompleteTime != null ?
+                                wfi.CompleteTime.ToString()! : "-",
+            ["can_resume"] = wfi.Status == WorkflowStatus.Suspended
         };
 
         return new WalzWorkflowMessage
         (
-            workflow_id: workflow_id,
+            workflow_id: wfi.Id,
             key: "WorkflowState",
             data: data
         );

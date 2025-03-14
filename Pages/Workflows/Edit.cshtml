@@ -3,7 +3,7 @@
 @model WorkerDemo.Pages.Workflows.EditModel
 
 @{
-    ViewData["Title"] = @Model.Workflow.InstanceTitle;
+    ViewData["Title"] = @Model.Title;
 }
 
 <p>
@@ -17,11 +17,11 @@
     <div class="card">
         <div class="card-header text-muted">
             <span class="wwf-definition">
-                @Html.DisplayFor(model => model.Workflow.InstanceTitle)
+                @Html.DisplayFor(model => model.Title)
             </span>
             <br/>
             <span class="wwf-instance">
-                @Html.DisplayFor(model => model.Workflow.InstanceId)
+                @Html.DisplayFor(model => model.Workflow.Id)
             </span>
         </div>
         <dl class="row card-body">
@@ -63,7 +63,7 @@
         </dl>
     </div>
 </p>
-
+ 
 <table id="log" class="table">
     <thead>
         <tr>
@@ -79,7 +79,7 @@
     </tbody>
 </table>
 
-<input id="workflow_id" type="hidden" value="@Model.Workflow.InstanceId" /> 
+<input id="workflow_id" type="hidden" value="@Model.Workflow.Id" /> 
 
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 

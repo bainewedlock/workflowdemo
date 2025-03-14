@@ -10,12 +10,10 @@ namespace WorkerDemo.Pages.Workflows
     public class IndexModel : PageModel
     {
         readonly IWorkflowHost wf;
-        readonly WorkflowContext db;
 
-        public IndexModel(IWorkflowHost wf, WorkflowContext db)
+        public IndexModel(IWorkflowHost wf)
         {
             this.wf = wf;
-            this.db = db;
         }
 
         public IList<WorkflowInstance> Workflows { get;set; } = default!;
@@ -29,9 +27,9 @@ namespace WorkerDemo.Pages.Workflows
 
         public async Task<IActionResult> OnPostCleanup(string instanceId)
         {
-            await db.Workflows
-                .Where(x => x.Status == 2 || x.Status == 3) // complete/terminated
-                .ExecuteDeleteAsync();
+            //await db.Workflows
+            //    .Where(x => x.Status == 2 || x.Status == 3) // complete/terminated
+            //    .ExecuteDeleteAsync();
             return RedirectToPage();
         }
     }

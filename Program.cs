@@ -17,7 +17,7 @@ builder.Services.AddSingleton(
 builder.Services
     .AddWorkflow(x => x.UseSqlite(workflow_cs, true))
     .AddHostedService<WorkflowHost>()
-    .AddDbContext<WorkflowContext>(opt => opt.UseSqlite(workflow_cs))
+    //.AddDbContext<WorkflowContext>(opt => opt.UseSqlite(workflow_cs))
     .AddWalzWorkflows()
     .AddWorkflowMiddleware<WorkflowStateMiddleware>()
     .AddSingleton<ClientManager>()
