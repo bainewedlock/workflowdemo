@@ -7,9 +7,16 @@
 
 <h1>Workflows</h1>
 <p>
-    <form method="post" asp-page-handler="Cleanup" class="d-flex-row">
-        <a class="btn btn-primary" href="demo">Start Demo Workflow</a>
-        <button type="submit" class="btn btn-danger">Remove all finished</button>
+    <form method="post" class="d-flex-row">
+        <button type="submit" class="btn btn-primary" asp-page-handler="Start">
+            Start Demo Workflow
+        </button>
+        <button type="submit" class="btn btn-secondary" asp-page-handler="Purge">
+            Remove old finished
+        </button>
+        <button type="submit" class="btn btn-danger" asp-page-handler="Cleanup">
+            Remove ALL finished
+        </button>
     </form>
 </p>
 

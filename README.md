@@ -1,4 +1,5 @@
 ## TODO
+- identify the user who is resuming / terminating a workflow
 
 ## Note 1
 - GetWorkflowInstances is marked as obsolete

@@ -76,9 +76,8 @@ public class WalzWorkflowHub : Hub
     {
         var wfi = await wf.PersistenceStore.GetWorkflowInstance(workflow_id);
         var a = assets(wfi);
-        await a.LogAsync(LogCategory.Workflow, $"user resume");
-        // TODO: identify user
-        // var user = Context.User.Identity;
+        var user = Context.User!.Identity!;
+        await a.LogAsync(LogCategory.Workflow, $"resumed by {user.Name}");
         await wf.ResumeWorkflow(workflow_id);
     }
 
@@ -86,9 +85,8 @@ public class WalzWorkflowHub : Hub
     {
         var wfi = await wf.PersistenceStore.GetWorkflowInstance(workflow_id);
         var a = assets(wfi);
-        await a.LogAsync(LogCategory.Workflow, $"user terminate");
-        // TODO: identify user
-        // var user = Context.User.Identity;
+        var user = Context.User!.Identity!;
+        await a.LogAsync(LogCategory.Workflow, $"terminated by {user.Name}");
         await wf.TerminateWorkflow(workflow_id);
     }
 }
