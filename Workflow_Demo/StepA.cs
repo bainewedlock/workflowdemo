@@ -7,7 +7,7 @@ class StepA : WalzStepBodyAsync
     public override async Task RunAsync()
     {
         var n = 5;
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < n; i++)
         {
             await Task.Delay(500);
             await LogAsync($"looping {i + 1}/{n}");
