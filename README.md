@@ -13,7 +13,7 @@ starting it, like so:
   The asset directory will be named after the BK.
   (could have named it like the WorkflowInstanceId but decided against it)
 - I like to use the workflow engine in a simple fashion, just
-to perform one step after another without passing data or anything.
+to perform one step after another, and suspend if something unexpected happens. 
 - I like to store all business relevant data in the file system
   for various reasons. (instead of using workflow-core's db for that)
   That also means if I want to pass some initial data to a workflow I
