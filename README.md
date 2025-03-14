@@ -33,8 +33,12 @@ We want a history of what happened, stored separately for each workflow:
 - exceptions
 - user interactions (resuming / termination)
 
-## Note 1
+## Note about obsolete method in library
 - GetWorkflowInstances is marked as obsolete
 - I'm still using it is useful and there is no alternative in the API yet
 - a workaround could be to bypass the API and access the DB directly
 - see https://github.com/danielgerlag/workflow-core/discussions/861
+
+## Ideas
+- purging of old workflows should be scheduled
+  (maybe with a BackgroundService from Microsoft.Extensions.Hosting)
