@@ -37,7 +37,7 @@ We want a history of what happened, stored separately for each workflow:
 
 ## Note about obsolete method in library
 - GetWorkflowInstances is marked as obsolete
-- I'm still using it is useful and there is no alternative in the API yet
+- I'm still using it, as its useful and there is no alternative in the API yet
 - a workaround could be to bypass the API and access the DB directly
 - see https://github.com/danielgerlag/workflow-core/discussions/861
 
