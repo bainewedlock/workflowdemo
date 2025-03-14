@@ -162,6 +162,11 @@ public class Assets
         return File.AppendAllLinesAsync(path, [line]);
     }
 
+    /// <summary>
+    /// Make sure the asset folder was created by the current
+    /// workflow. Anyting else could indicate a problem and
+    /// should be checked out by a person.
+    /// </summary>
     public async Task CheckOwnerAsync()
     {
         var path = Path.Combine(InitDir(), OWNER_FILE);
@@ -171,8 +176,8 @@ public class Assets
             var owner = (await File.ReadAllTextAsync(path)).Trim();
             if (owner != wf.Id)
                 throw new ApplicationException(
-                    $"Unerwarteter Zugriff auf Asset {SubDir} durch " +
-                    $"Workflow {wf.Id}");
+                    $"Unexpected access to asset {SubDir} by " +
+                    $"workflow {wf.Id}");
         }
         else
         {

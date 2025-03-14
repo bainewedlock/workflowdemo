@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using WorkerDemo.Generic.WalzWorkflow;
+﻿using WorkerDemo.Generic.WalzWorkflow;
 
 namespace WorkerDemo.Workflow_Demo;
 
@@ -7,21 +6,16 @@ class StepA : WalzStepBodyAsync
 {
     public override async Task RunAsync()
     {
-        Debug.WriteLine("Hello");
-
+        var n = 5;
         for (int i = 0; i < 5; i++)
         {
             await Task.Delay(500);
-            await LogAsync($"looping {i + 1}/10");
+            await LogAsync($"looping {i + 1}/{n}");
         }
 
         await Assets.WriteStringAsync("dummy.txt", () =>
         {
-            return "change this line manually to HELLO";
+            return "change this line manually to HELLO so step 2 can resume";
         });
-
-        //Random random = new Random();
-        //if (random.Next(2) == 0)
-        //    throw new Exception("simulierte Ausnahme");
     }
 }
