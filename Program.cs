@@ -39,6 +39,8 @@ builder.Services.AddAuthentication(
     });
 // ----------------------------------------------------------------------------
 
+builder.Services.AddWindowsService();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

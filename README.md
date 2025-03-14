@@ -27,6 +27,7 @@ as the workflows REFERENCE when starting it, like so:
 var BK = "order.5023423499";
 await host.StartWorkflow("checkoutmail", null, BK);
 ```
+The base directory of the assets can be controlled with appsettings.json.
 
 ## Traceability
 We want a history of what happened, stored separately for each workflow:
@@ -41,6 +42,17 @@ We want a history of what happened, stored separately for each workflow:
 - a workaround could be to bypass the API and access the DB directly
 - see https://github.com/danielgerlag/workflow-core/discussions/861
 
+
 ## Ideas
 - purging of old workflows should be scheduled
   (maybe with a BackgroundService from Microsoft.Extensions.Hosting)
+
+## Some notes if you want to use it in your app
+- I installed signalr "as a client library", see libman.js
+- I think you could simply copy the following directories
+  - Pages/Account 
+  - Pages/Workflows
+  - Generic/WalzWorkflow
+- I used SQLite to be independent of a standalone db server
+- check out what you need from Program.cs, it has comments
+
