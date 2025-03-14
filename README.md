@@ -12,6 +12,8 @@ For a usage example please check out the folder 'Workflow_Demo'.
 We want an overview of workflows, especially unfinished ones.
 We want to see the details of a failed workflow and 
 a button to easily retry at its current step.
+The UI uses active directory/cookie authentication in order to
+identify the users who resume/terminate worfklows.
 
 ## Assets
 We want to use a folder for each workflow to store related data.
