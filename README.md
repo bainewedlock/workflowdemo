@@ -5,13 +5,13 @@ inside a windows service with a web ui for management.
 
 ## WalzWorkflow
 I made generic classes which address some of our usual
-requirements and put them in the folder 'WalzWorkflow'.
+requirements and put them in the folder 'WalzWorkflow'.\
 For a usage example please check out the folder 'Workflow_Demo'.
 
 ## Management UI
-We want an overview of workflows, especially unfinished ones.
-We want to see the details of a failed workflow and 
-a button to easily retry at its current step. (e.g. after manual intervention)
+We want an overview of workflows, especially unfinished ones.\
+We want to see the details of a failed workflow and \
+a button to easily retry at its current step. (e.g. after manual intervention)\
 The UI uses active directory/cookie authentication in order to
 identify the users who resume/terminate worfklows.
 
@@ -19,9 +19,9 @@ identify the users who resume/terminate worfklows.
 ![ui screenshot - detail of a workflow](readme_assets/screen02-details.png)
 
 ## Assets
-We want to use a folder for each workflow to store related data.
+We want to use a folder for each workflow to store related data.\
 This is so you can easily save intermediate files in one step
-and use them in a later step.
+and use them in a later step.\
 (for example, create a pdf in step 1 and send it via mail in step 2)
 
 In order for this to work you have to specify a business key (BK)
