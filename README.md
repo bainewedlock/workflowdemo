@@ -56,8 +56,8 @@ We want a history of what happened, stored separately for each workflow:
 
 
 ## Ideas
-- purging of old workflows should be scheduled
-  (maybe with a BackgroundService from Microsoft.Extensions.Hosting)
+- assets should be purged at some point too (together with workflows?)
+  we use a separate automated script file for now
 
 ## Some notes if you want to use it in your app
 - I installed signalr "as a client library", see libman.js
@@ -67,4 +67,6 @@ We want a history of what happened, stored separately for each workflow:
   - Generic/WalzWorkflow
 - I used SQLite to be independent of a standalone db server
 - check out what you need from Program.cs, it has comments
+- Complete/Terminated workflows get purged after 14 days
+  (see CleanupWorkflowService.cs)
 

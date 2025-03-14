@@ -40,6 +40,7 @@ builder.Services.AddAuthentication(
 // ----------------------------------------------------------------------------
 
 builder.Services.AddWindowsService();
+builder.Services.AddHostedService<CleanupWorkflowService>();
 
 var app = builder.Build();
 
