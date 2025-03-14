@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using WorkerDemo.Generic.WorkflowEF;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -9,27 +7,29 @@ namespace WorkerDemo.Pages.Workflows
 {
     public class IndexModel : PageModel
     {
-        readonly IWorkflowHost wf;
+        readonly IWorkflowHost host;
+        readonly IWorkflowPurger purger;
 
-        public IndexModel(IWorkflowHost wf)
+        public IndexModel(IWorkflowHost host, IWorkflowPurger purger)
         {
-            this.wf = wf;
+            this.host = host;
+            this.purger = purger;
         }
 
         public IList<WorkflowInstance> Workflows { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Workflows = (await wf.PersistenceStore.GetWorkflowInstances(
+            Workflows = (await host.PersistenceStore.GetWorkflowInstances(
                 status: null, type: null, createdFrom: null, createdTo: null,
                 skip: 0, take: 100)).ToList();
         }
 
         public async Task<IActionResult> OnPostCleanup(string instanceId)
         {
-            //await db.Workflows
-            //    .Where(x => x.Status == 2 || x.Status == 3) // complete/terminated
-            //    .ExecuteDeleteAsync();
+            var date = DateTime.Today.AddDays(-14);
+            await purger.PurgeWorkflows(WorkflowStatus.Terminated, date);
+            await purger.PurgeWorkflows(WorkflowStatus.Complete, date);
             return RedirectToPage();
         }
     }

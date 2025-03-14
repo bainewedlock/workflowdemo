@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using WorkerDemo.Generic.WalzWorkflow;
-using WorkerDemo.Generic.WorkflowEF;
 using Workflow_Demo;
 using WorkflowCore.Interface;
 using WorkflowCore.Services;
@@ -22,7 +21,6 @@ builder.Services
     .AddWorkflowMiddleware<WorkflowStateMiddleware>()
     .AddSingleton<ClientManager>()
     .AddRazorPages();
-
 
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -75,6 +73,5 @@ app.MapGet("/demo", async ctx =>
     await wf.StartWorkflow("Demo", null, $"61.{rnd}.1.2");
     ctx.Response.Redirect("/Workflows");
 });
-
 
 app.Run();
