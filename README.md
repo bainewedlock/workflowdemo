@@ -15,6 +15,9 @@ a button to easily retry at its current step. (e.g. after manual intervention)
 The UI uses active directory/cookie authentication in order to
 identify the users who resume/terminate worfklows.
 
+![ui screenshot - overview of workflows](readme_assets/screen01-overview.png)
+![ui screenshot - detail of a workflow](readme_assets/screen02-details.png)
+
 ## Assets
 We want to use a folder for each workflow to store related data.
 This is so you can easily save intermediate files in one step

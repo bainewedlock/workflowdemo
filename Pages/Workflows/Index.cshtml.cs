@@ -9,6 +9,7 @@ namespace WorkerDemo.Pages.Workflows
     {
         readonly IWorkflowHost host;
         readonly IWorkflowPurger purger;
+        Random random = new Random();
 
         public IndexModel(IWorkflowHost host, IWorkflowPurger purger)
         {
@@ -26,7 +27,7 @@ namespace WorkerDemo.Pages.Workflows
         }
         public async Task<IActionResult> OnPostStart(string instanceId)
         {
-            var rnd = 12345;
+            var rnd = random.Next(1000000, 9999999);
             await host.StartWorkflow("Demo", null, $"61.{rnd}.1.2");
             return RedirectToPage();
         }
