@@ -11,6 +11,7 @@ starting it, like so:
   await host.StartWorkflow("checkoutmail", null, BK);
   ```
   The asset directory will be named after the BK.
+  Make sure it does not contain invalid path characters like colon ':' etc.!
   (could have named it like the WorkflowInstanceId but decided against it)
 - I like to use the workflow engine in a simple fashion, just
 to perform one step after another, and suspend if something unexpected happens. 
@@ -61,6 +62,12 @@ We want a history of what happened, stored separately for each workflow:
 
 ## Some notes if you want to use it in your app
 - I installed signalr "as a client library", see libman.js
+  ![installing signalr](readme_assets/screen03-signalr.png)
+- Remove jQuery (in _Layout.cshtml and from wwwroot)
+- Nuget Packages
+  - WorkflowCore
+  - WorkflowCore.Persistence.Sqlite
+  - Microsoft.Extensions.Hosting.WindowsServices
 - I think you could simply copy the following directories
   - Pages/Account 
   - Pages/Workflows
