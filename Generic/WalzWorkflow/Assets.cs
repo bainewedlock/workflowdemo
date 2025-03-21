@@ -157,6 +157,31 @@ public class Assets
     }
 
     /// <summary>
+    /// Write asset file
+    /// </summary>
+    /// <param name="filename">Filename without path</param>
+    /// <param name="create">Callback to create asset</param>
+    public async Task WriteBytesAsync(string filename,
+        Func<Task<byte[]>> create, string subdir="", bool logging=true)
+    {
+        var path = Path.Combine(InitDir(subdir), filename);
+        if (Path.Exists(path))
+        {
+            if (logging)
+                await LogAsync(LogCategory.Asset,
+                    $"byte asset already exists: {filename}");
+        }
+        else
+        {
+            var content = await create();
+            await File.WriteAllBytesAsync(path, content);
+            if (logging)
+                await LogAsync(LogCategory.Asset,
+                    $"byte asset written: {filename} ({content.Length})");
+        }
+    }
+
+    /// <summary>
     /// Append one line to log
     /// </summary>
     /// <param name="message">preformatted line</param>
