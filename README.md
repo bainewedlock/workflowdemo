@@ -63,7 +63,6 @@ We want a history of what happened, stored separately for each workflow:
 ## Some notes if you want to use it in your app
 - I installed signalr "as a client library", see libman.js
   ![installing signalr](readme_assets/screen03-signalr.png)
-- Remove jQuery (in _Layout.cshtml and from wwwroot)
 - Nuget Packages
   - WorkflowCore
   - WorkflowCore.Persistence.Sqlite
@@ -76,4 +75,6 @@ We want a history of what happened, stored separately for each workflow:
 - check out what you need from Program.cs, it has comments
 - Complete/Terminated workflows get purged after 14 days
   (see CleanupWorkflowService.cs)
+- Remove jQuery (in _Layout.cshtml and from wwwroot)
+- copy walzworkflow.css and reference it in _Lyout.cshtml_
 

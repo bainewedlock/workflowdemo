@@ -23,14 +23,15 @@ public class Assets
     /// Create asset dir for workflow if necessary
     /// </summary>
     /// <returns>path</returns>
-    string InitDir()
+    string InitDir(string subdir="")
     {
-        var path = Path.Combine( config.AssetsBaseDir, SubDir);
-        if (!Directory.Exists(path))
+        string dir = Path.Combine(config.AssetsBaseDir, SubDir, subdir);;
+
+        if (!Directory.Exists(dir))
         {
-            Directory.CreateDirectory(path);
+            Directory.CreateDirectory(dir);
         }
-        return path;
+        return dir;
     }
 
     string SubDir => $"{wf.WorkflowDefinitionId}/{wf.Reference}";
@@ -87,7 +88,7 @@ public class Assets
     /// <param name="create">Callback to create asset</param>
     /// <returns>File content as string</returns>
     public async Task<string> StringAsync(
-        string filename, Func<string> create)
+        string filename, Func<Task<string>> create)
     {
         await WriteStringAsync(filename, create);
         return await ReadStringAsync(filename);
@@ -109,9 +110,10 @@ public class Assets
     /// </summary>
     /// <param name="filename">Filename without path</param>
     /// <returns>File content as string</returns>
-    public async Task<string> ReadStringAsync(string filename)
+    public async Task<string> ReadStringAsync(string filename
+        , string subdir="")
     {
-        var path = Path.Combine(InitDir(), filename);
+        var path = Path.Combine(InitDir(subdir), filename);
         return await File.ReadAllTextAsync(path);
     }
 
@@ -134,20 +136,23 @@ public class Assets
     /// </summary>
     /// <param name="filename">Filename without path</param>
     /// <param name="create">Callback to create asset</param>
-    public async Task WriteStringAsync(string filename, Func<string> create)
+    public async Task WriteStringAsync(string filename,
+        Func<Task<string>> create, bool logging=true, string subdir="")
     {
-        var path = Path.Combine(InitDir(), filename);
+        var path = Path.Combine(InitDir(subdir), filename);
         if (Path.Exists(path))
         {
-            await LogAsync(LogCategory.Asset,
-                $"string asset already exists: {filename}");
+            if (logging)
+                await LogAsync(LogCategory.Asset,
+                    $"string asset already exists: {filename}");
         }
         else
         {
-            var content = create(); // TODO: make create() async
+            var content = await create();
             await File.WriteAllTextAsync(path, content);
-            await LogAsync(LogCategory.Asset,
-                $"string asset written: {filename} ({content.Length})");
+            if (logging)
+                await LogAsync(LogCategory.Asset,
+                    $"string asset written: {filename} ({content.Length})");
         }
     }
 
