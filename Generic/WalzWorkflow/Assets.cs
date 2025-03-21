@@ -189,4 +189,11 @@ public class Assets
             await File.WriteAllTextAsync(path, wf.Id);
         }
     }
+
+
+    public IEnumerable<string> Enumerate(string pattern, string subdir="")
+    {
+        return Directory.EnumerateFiles(InitDir(subdir), pattern,
+            SearchOption.AllDirectories);
+    }
 }
