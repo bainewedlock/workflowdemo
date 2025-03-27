@@ -15,7 +15,8 @@ class StepA : WalzStepBodyAsync
 
         await Assets.WriteStringAsync("dummy.txt", () =>
         {
-            return "change this line manually to HELLO so step 2 can resume";
+            return Task.FromResult("change this line manually to HELLO so " +
+                "step 2 can resume");
         });
     }
 }

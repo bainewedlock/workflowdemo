@@ -21,9 +21,11 @@ namespace WorkerDemo.Pages.Workflows
 
         public async Task OnGetAsync()
         {
+#pragma warning disable CS0612 // Obsolete but there is no alternative
             Workflows = (await host.PersistenceStore.GetWorkflowInstances(
                 status: null, type: null, createdFrom: null, createdTo: null,
                 skip: 0, take: 100)).ToList();
+#pragma warning restore CS0612 // ------------------------------------
         }
         public async Task<IActionResult> OnPostStart(string instanceId)
         {

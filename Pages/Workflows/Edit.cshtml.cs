@@ -7,7 +7,7 @@ namespace WorkerDemo.Pages.Workflows
 {
     public class EditModel : PageModel
     {
-        public WorkflowInstance? Workflow { get; set; }
+        public WorkflowInstance Workflow { get; set; } = null!;
         public string Title = "";
         readonly IWorkflowHost workflows;
 

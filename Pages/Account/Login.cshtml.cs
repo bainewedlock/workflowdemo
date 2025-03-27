@@ -15,14 +15,14 @@ public class LoginModel : PageModel
 {
 
     [TempData]
-    public string ErrorMessage { get; set; }
-    public string ReturnUrl { get; set; }
+    public string ErrorMessage { get; set; } = null!;
+    public string ReturnUrl { get; set; } = null!;
     [BindProperty, Required]
-    public string Username { get; set; }
+    public string Username { get; set; } = null!;
     [BindProperty, DataType(DataType.Password)]
-    public string Password { get; set; }
+    public string Password { get; set; } = null!;
 
-    public void OnGet(string returnUrl = null)
+    public void OnGet(string returnUrl = null!)
     {
         if (!string.IsNullOrEmpty(ErrorMessage))
         {
@@ -37,9 +37,9 @@ public class LoginModel : PageModel
     class UserModel
     {
         public int Id { get; internal set; }
-        public string Name { get; internal set; }
-        public string Password { get; internal set; }
-        public string Role { get; internal set; }
+        public string Name { get; internal set; } = null!;
+        public string Password { get; internal set; } = null!;
+        public string Role { get; internal set; } = null!;
     }
 
     List<UserModel> users = new()
@@ -47,7 +47,7 @@ public class LoginModel : PageModel
         new UserModel { Id = 1337, Name = "boeckwi", Password = "abc", Role = "Admin" }
     };
 
-    public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+    public async Task<IActionResult> OnPostAsync(string returnUrl = null!)
     {
         returnUrl = returnUrl ?? Url.Content("~/");
 
