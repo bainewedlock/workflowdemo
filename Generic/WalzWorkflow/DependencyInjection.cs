@@ -11,6 +11,9 @@ public static class DependencyInjection
             .Where(typeof(WalzStepBodyAsync).IsAssignableFrom)
             .ToArray();
 
+        services.AddWorkflowMiddleware<WorkflowStateMiddleware>();
+        services.AddSingleton<ClientManager>();
+        services.AddHostedService<CleanupWorkflowService>();
 
         services.AddTransient<Assets.Factory>(svc => wf =>
         {

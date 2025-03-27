@@ -20,8 +20,7 @@ namespace WorkerDemo.Generic.WalzWorkflow
         protected override async Task ExecuteAsync(CancellationToken st)
         {
             using var timer = new PeriodicTimer(rundelay);
-            while (!st.IsCancellationRequested &&
-                   await timer.WaitForNextTickAsync(st))
+            do
             {
                 try
                 {
@@ -35,6 +34,8 @@ namespace WorkerDemo.Generic.WalzWorkflow
                         $"Failed to execute Cleanup. See you in {rundelay}!");
                 }
             }
+            while (!st.IsCancellationRequested &&
+                   await timer.WaitForNextTickAsync(st));
         }
     }
 }

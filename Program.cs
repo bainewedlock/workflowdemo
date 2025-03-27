@@ -23,8 +23,6 @@ builder.Services
     // (before I found IWorkflowPurger in the API, which is better of course)
     //.AddDbContext<WorkflowContext>(opt => opt.UseSqlite(workflow_cs))
     .AddWalzWorkflows()
-    .AddWorkflowMiddleware<WorkflowStateMiddleware>()
-    .AddSingleton<ClientManager>()
     .AddRazorPages();
 
 builder.Services.AddSignalR();
@@ -40,7 +38,6 @@ builder.Services.AddAuthentication(
 // ----------------------------------------------------------------------------
 
 builder.Services.AddWindowsService();
-builder.Services.AddHostedService<CleanupWorkflowService>();
 
 var app = builder.Build();
 
