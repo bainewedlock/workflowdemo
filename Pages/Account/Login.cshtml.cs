@@ -54,7 +54,6 @@ public class LoginModel : PageModel
         if (ModelState.IsValid)
         {
             var user = users.SingleOrDefault(u => u.Name == Username && u.Password == Password);
-            user = users[0];
 
             if (user != null)
             {
