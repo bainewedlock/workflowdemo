@@ -7,11 +7,8 @@ public static class DependencyInjection
     public static IServiceCollection AddWalzWorkflows(
         this IServiceCollection services)
     {
-        var interface_type = typeof(WalzStepBodyAsync);
         var step_types = Assembly.GetExecutingAssembly().GetTypes()
-            .Where(t => interface_type.IsAssignableFrom(t)
-                        && t.IsClass
-                        && !t.IsAbstract)
+            .Where(typeof(WalzStepBodyAsync).IsAssignableFrom)
             .ToArray();
 
         services.AddWorkflowMiddleware<WorkflowStateMiddleware>();
@@ -20,8 +17,8 @@ public static class DependencyInjection
 
         services.AddTransient<Assets.Factory>(svc => wf =>
         {
-            var wc = svc.GetRequiredService<WalzWorkflowConfig>()!;
-            var cm = svc.GetRequiredService<ClientManager>()!;
+            var wc = svc.GetService<WalzWorkflowConfig>()!;
+            var cm = svc.GetService<ClientManager>()!;
             return new Assets(wc, wf, cm);
         });
 
@@ -29,8 +26,8 @@ public static class DependencyInjection
         {
             services.AddTransient(t, svc =>
             {
-                var step = (WalzStepBodyAsync)ActivatorUtilities.CreateInstance(svc, t);
-                step.AssetsFactory = svc.GetRequiredService<Assets.Factory>()!;
+                var step = (WalzStepBodyAsync)Activator.CreateInstance(t)!;
+                step.AssetsFactory = svc.GetService<Assets.Factory>()!;
                 return step;
             });
         }
